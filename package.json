@@ -1,18 +1,26 @@
 {
   "name": "fast-api",
   "version": "0.1.0",
+  "https": true,
+  "port": 8080,
+  "host": "dev.q.qq.com",
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.17",
     "@types/node": "12.7.2",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.8.5",
+    "@types/react-redux": "^7.1.2",
+    "node-sass": "^4.12.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-redux": "^7.1.0",
     "react-scripts": "3.1.1",
+    "redux": "^4.0.4",
     "typescript": "3.5.3"
   },
   "scripts": {
+    "serve": "node server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
