@@ -4,44 +4,49 @@ import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 interface NavBoxProps {
   text: string;
   sub: string;
+  to: string;
 }
+
+// Render a NavBox Dom
+const NavBox: React.FC<NavBoxProps> = ({ text, sub, to }) => (
+  <Link to={to}>
+    <div className="nav-box">
+      <h3 className="nav-box-text">{text}</h3>
+      <div className="nav-box-subText">{sub}</div>
+    </div>
+  </Link>
+);
 
 /**
  *  Render different Nav according to current pathname
  */
-const createNavLink = (pathname: string): React.ReactElement => {
-  if (/^\/api(\/?)/.test(pathname)) {
-    return (
-      <Link to="/log">
-        <NavBox text={"TO Log"} sub={"test1"} />
-      </Link>
-    );
-  }
-  if (/^\/log(\/?)/.test(pathname)) {
-    return (
-      <Link to="/api">
-        <NavBox text={"TO API"} sub={"test2"} />
-      </Link>
-    );
-  }
-  return <div>no title</div>;
-};
-
-// Render a NavBox Dom
-const NavBox: React.FC<NavBoxProps> = ({ text, sub }) => (
-  <div className="nav-box">
-    <h3 className="nav-box-text">{text}</h3>
-    <div className="nav-box-subText">{sub}</div>
-  </div>
-);
 
 class Header extends React.Component<RouteComponentProps> {
   render() {
     const pathname: string = this.props.location.pathname;
-    const CurrentNav: React.ReactElement = createNavLink(pathname);
+    const navProps: NavBoxProps = (() => {
+      if (/^\/api(\/?)/.test(pathname)) {
+        return {
+          text: "To LOG",
+          sub: "is one",
+          to: "/log",
+        };
+      }
+      if (/^\/log(\/?)/.test(pathname)) {
+        return {
+          text: "To API",
+          sub: "is two",
+          to: "/api",
+        };
+      }
+      return { text: "To API", sub: "is two", to: "/api" };
+    })();
+
     return (
       <header className="layout-header">
-        <nav className="layout-header-nav">{CurrentNav}</nav>
+        <nav className="layout-header-nav">
+          <NavBox {...navProps} />
+        </nav>
       </header>
     );
   }
