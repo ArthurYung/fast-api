@@ -8,11 +8,6 @@ const routes: RouterMap[] = [
     component: lazy(() => import("../page/home/App")),
   },
   {
-    path: "/log",
-    component: lazy(() => import("../page/log/App")),
-    routes: [],
-  },
-  {
     path: "/api",
     component: lazy(() => import("../page/api/App")),
     routes: [
@@ -36,13 +31,18 @@ function RouteWithSubRoutes(route: RouterMap) {
   );
 }
 
-const RouterView: React.FC = () => (
+const RouterView: React.FC<{
+  HeaderComponent: React.ComponentClass<any>;
+  FooterComponent: React.ComponentClass<any>;
+}> = ({ HeaderComponent, FooterComponent }) => (
   <HashRouter>
+    <HeaderComponent />
     <Suspense fallback={<div>loading...</div>}>
       {routes.map((route, i) => {
         return <RouteWithSubRoutes key={i} {...route} />;
       })}
     </Suspense>
+    <FooterComponent />
   </HashRouter>
 );
 export { RouterView, RouteWithSubRoutes };
