@@ -16,25 +16,26 @@ const NavBox: React.FC<NavBoxProps> = ({ text, sub }) => (
 class Header extends React.Component<RouteComponentProps> {
   render() {
     const pathname = this.props.location.pathname;
-    const CurrentNav = (() => {
+    const CurrentNav: React.ReactElement = (() => {
       if (/^\/api(\/?)/.test(pathname)) {
         return (
-          <Link to="/api">
+          <Link to="/log">
             <NavBox text={"TO Log"} sub={"test1"} />
           </Link>
         );
       }
+      if (/^\/log(\/?)/.test(pathname)) {
+        return (
+          <Link to="/api">
+            <NavBox text={"TO API"} sub={"test2"} />
+          </Link>
+        );
+      }
+      return <div>no title</div>;
     })();
     return (
       <header className="layout-header">
-        <nav className="layout-header-nav">
-          <Link to="/api">
-            <NavBox text={"TO Log"} sub={"test1"} />
-          </Link>
-          <Link to="/log">
-            <NavBox text={"TO API"} sub={"test12"} />
-          </Link>
-        </nav>
+        <nav className="layout-header-nav">{CurrentNav}</nav>
       </header>
     );
   }
