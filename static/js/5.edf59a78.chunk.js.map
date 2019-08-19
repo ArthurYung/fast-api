@@ -1,1 +1,0 @@
-{"version":3,"sources":["page/home/App.tsx"],"names":["props"],"mappings":"+GAAA,2BACe,mBAACA,GACd,OACE,6BACE","file":"static/js/5.edf59a78.chunk.js","sourcesContent":["import React from \"react\";\r\nexport default (props: any) => {\r\n  return (\r\n    <div>\r\n      <span>is App</span>\r\n    </div>\r\n  );\r\n};\r\n"],"sourceRoot":""}

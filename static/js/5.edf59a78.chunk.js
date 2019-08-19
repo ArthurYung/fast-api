@@ -1,2 +1,0 @@
-(window["webpackJsonpfast-api"]=window["webpackJsonpfast-api"]||[]).push([[5],{43:function(n,a,e){"use strict";e.r(a);var t=e(0),p=e.n(t);a.default=function(n){return p.a.createElement("div",null,p.a.createElement("span",null,"is App"))}}}]);
-//# sourceMappingURL=5.edf59a78.chunk.js.map
