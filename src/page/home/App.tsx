@@ -2,7 +2,7 @@ import React from "react";
 export default (props: any) => {
   return (
     <div>
-      <span>is App</span>
+      <span>is new App</span>
     </div>
   );
 };
