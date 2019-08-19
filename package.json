@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "https": true,
   "port": 8080,
-  "host": "dev.q.qq.com",
+  "host": "dev.vanoc.com",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.3.2",
