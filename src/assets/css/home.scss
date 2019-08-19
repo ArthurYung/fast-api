@@ -1,4 +1,56 @@
+/* ===== 基础样式 ===== */
 body {
-  margin: 0;
+  line-height: 1.5;
+  font-family: "Roboto", "Helvetica Neue", "Helvetica", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+  font-size: 14px;
   padding: 0;
+  margin: 0;
+  color: #202121;
+  background-color: #f4f7f6;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: "Roboto", "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei",
+    "\9ED1\4F53", Arial, sans-serif;
+}
+input,
+select,
+textarea {
+  font-size: 14px;
+}
+
+textarea,
+input {
+  color: #000;
+}
+textarea {
+  resize: none;
+  overflow-y: auto;
+}
+
+.app {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  max-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  header {
+    flex: 1;
+  }
+  main {
+    flex: 12;
+  }
 }
