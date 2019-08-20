@@ -9,39 +9,29 @@ import PlayArrow from "@material-ui/icons/PlayArrow";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 
 interface MenuProps extends RouteComponentProps {
-  menuList: [];
+  menuList?: string[];
 }
 
-const Menu: React.FC<RouteComponentProps> = ({ history, menuList }) => (
+const Menu: React.FC<MenuProps> = ({ history, menuList = [] }) => (
   <div className={"api-menu"}>
     <List>
-      <ListItem>
-        <TripOrigin />
-        <ListItemText primary="Single-line item" />
-        <ListItemSecondaryAction>
-          <IconButton
-            edge="end"
-            aria-label="action"
-            onClick={() => history.push("/api/ttt3")}
-          >
-            <PlayArrow />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-      <ListItem>
-        <TripOrigin />
-
-        <ListItemText primary="Single-line item" />
-        <ListItemSecondaryAction>
-          <IconButton
-            edge="end"
-            aria-label="action"
-            onClick={() => history.push("/api/test1")}
-          >
-            <PlayArrow />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
+      {menuList.map((menuName: string, i) => (
+        <ListItem key={i} className={"api-menu-item"}>
+          <TripOrigin />
+          <ListItemText primary={menuName} />
+          <ListItemSecondaryAction>
+            <IconButton
+              edge="end"
+              aria-label="action"
+              onClick={() =>
+                history.push(`/api/${menuName.replace(/\./g, "_")}`)
+              }
+            >
+              <PlayArrow />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+      ))}
     </List>
   </div>
 );

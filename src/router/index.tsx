@@ -12,7 +12,7 @@ const routes: RouterMap[] = [
     component: lazy(() => import("../page/api/App")),
     routes: [
       {
-        path: "/api/:test",
+        path: "/api/:name",
         component: lazy(() => import("../page/api/Todo"))
       }
     ]
