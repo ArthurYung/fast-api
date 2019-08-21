@@ -7,7 +7,7 @@ body {
   padding: 0;
   margin: 0;
   color: #202121;
-  background-color: #f4f7f6;
+  background-color: #fff;
   text-align: center;
 }
 
@@ -47,10 +47,24 @@ textarea {
   max-width: 100vw;
   display: flex;
   flex-direction: column;
+  &-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    & > .MuiLinearProgress-colorPrimary {
+      background-color: #fff;
+    }
+  }
   header {
     flex: 1;
   }
   main {
     flex: 12;
+    padding: 0 14px;
   }
+}
+
+.pre-javascript {
+  border-radius: 4px;
 }

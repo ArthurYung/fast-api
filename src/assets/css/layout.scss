@@ -5,7 +5,7 @@
       display: flex;
       justify-content: center;
       a {
-        color: $base_text_color;
+        color: #fff;
       }
     }
   }
@@ -19,7 +19,7 @@
     width: calc(100vw - 28px);
     border-radius: 4px;
     padding: 12px;
-    background-color: #ffffff;
+    background-color: #1d1d1d;
 
     &-text {
       font-size: 18px;
@@ -34,11 +34,11 @@
   }
 }
 
-@each $color in black, red, green, blue {
+@each $color in white, red, green, blue {
   .nav-box.#{$color} {
     .nav-box-text {
-      @if $color == black {
-        color: $color_txt_black;
+      @if $color == white {
+        color: $color_txt_white;
       } @else if $color == red {
         color: $color_txt_red;
       } @else if $color == green {
@@ -46,7 +46,7 @@
       } @else if $color == blue {
         color: $color_txt_blue;
       } @else {
-        color: $color_txt_black;
+        color: $color_txt_white;
       }
     }
   }
