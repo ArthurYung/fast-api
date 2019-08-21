@@ -1,0 +1,2 @@
+(window["webpackJsonpfast-api"]=window["webpackJsonpfast-api"]||[]).push([[7],{59:function(n,t,e){"use strict";e.r(t);var a=e(0),o=e.n(a),i=e(25),u=Object(i.b)(function(n){return{test:n.baseApi}},function(n){return{add:function(){n({type:"ADD_TODO",text:"ganbadie"})}}});t.default=u(function(n){return console.log(n),o.a.createElement("div",null,n.test[0],o.a.createElement("span",null,"is new App or old"),o.a.createElement("button",{onClick:function(){return n.add()}}))})}}]);
+//# sourceMappingURL=7.7af212f0.chunk.js.map

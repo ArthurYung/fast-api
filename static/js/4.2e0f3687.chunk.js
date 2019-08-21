@@ -1,2 +1,0 @@
-(window["webpackJsonpfast-api"]=window["webpackJsonpfast-api"]||[]).push([[4],{45:function(a,n,t){"use strict";t.r(n);var e=t(0),i=t.n(e);n.default=function(a){var n=a.match;return i.a.createElement("div",null,"is todo: ",n.params.name)}}}]);
-//# sourceMappingURL=4.2e0f3687.chunk.js.map
