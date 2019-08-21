@@ -1,5 +1,6 @@
 import baseCodeMap from "./baseCode";
-
+import { BaseApiInfo } from "./types";
+import { beginTimer, endTimer } from "./timer";
 const BASE_EXPRESSION_MATCH: RegExp = /^((.+?)\|)?(<(.+?)>)?(@(.+?):)?(api)?(\((.+?)\))?/;
 
 function createFunction(
@@ -12,6 +13,8 @@ function createFunction(
     let _timeId = _newTime($name, true)
     try {
       ${bodyCode || ""}
+    } catch(e){
+      _endTime(_timeId, true)
     } finally {
       _endTime(_timeId)
     }
@@ -19,19 +22,8 @@ function createFunction(
   // eslint-disable-next-line
   const fn = new Function("$n", "$name", "_newTime", "_endTime", funStr);
   return function(num: number) {
-    fn(num, name);
+    fn(num, name + "(" + num + ")", beginTimer, endTimer);
   };
-}
-
-interface BaseApiInfo {
-  name: string;
-  fn: Function;
-  baseCode: string;
-  initCode: string;
-  loop: boolean;
-  root: string | undefined;
-  id: number;
-  key: string;
 }
 
 interface apiTemplate {
@@ -58,15 +50,16 @@ class Interpreter {
   public pushBaseApiInfo(apiInfo: apiTemplate) {
     const { __root__, ...api } = apiInfo;
     Object.keys(api).forEach((key: string) => {
+      const id = this._id;
       const result = this.createBaseCode(api[key] as string, key, __root__);
-      const currApiInfo: BaseApiInfo = {
-        ...result,
-        id: this._id,
-        key
-      };
+      const currApiInfo = { ...result } as BaseApiInfo;
+
+      currApiInfo.id = id;
+      currApiInfo.key = key;
+      currApiInfo.expression = api[key];
 
       this._api.push(currApiInfo);
-      this._apiMap[this._id] = currApiInfo;
+      this._apiMap[id] = currApiInfo;
       this._id++;
     });
   }
@@ -85,11 +78,18 @@ class Interpreter {
     const param = matchResult[9];
     const rootApi = matchResult[6] || rootName;
     const root = rootApi === "empty" ? "" : rootApi;
-    const runtimeCode = `${root}${api ? "." + apiName : ""}${
-      param ? "(" + param + ")" : ""
-    }`;
+
     let baseCode: string;
+    let name = apiName;
     let loop = loopName !== "empty";
+    let runtimeCode = "" + root;
+
+    if (api) {
+      runtimeCode += root ? `.${apiName}` : apiName;
+    }
+    if (param) {
+      runtimeCode += `(${param})`;
+    }
 
     if (loop) {
       const loopCode = baseCodeMap["__" + (loopName || "for")] || "";
@@ -97,10 +97,10 @@ class Interpreter {
     } else {
       baseCode = runtimeCode;
     }
-    let name =
-      root && !["window", "empty"].includes(root)
-        ? `${root}.${apiName}`
-        : apiName;
+
+    if (root && !["window", "empty"].includes(root)) {
+      name = `${root}.${apiName}`;
+    }
 
     let fn = createFunction(initCode, baseCode, name);
 
