@@ -52,8 +52,11 @@ textarea {
     top: 0;
     left: 0;
     width: 100%;
-    & > .MuiLinearProgress-colorPrimary {
+    & > .app-progress-gpu {
       background-color: #fff;
+      & > .MuiLinearProgress-bar {
+        transform: translate3d(0, 0, 0);
+      }
     }
   }
   header {
@@ -67,4 +70,19 @@ textarea {
 
 .pre-javascript {
   border-radius: 4px;
+}
+
+.test-api {
+  background-color: #f00;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 5s ease;
+  transform: translate3d(0, 0, 0);
+}
+
+.test-go {
+  transform: translate3d(800px, 0, 0);
 }

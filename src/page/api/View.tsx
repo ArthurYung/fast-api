@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // eslint-disable-next-line
 import { match } from "react-router-dom";
 import { ApiParams } from "@/router/types";
@@ -20,6 +20,7 @@ interface viewProps {
 }
 
 const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
+  const [types, setTypes] = useState(false);
   const { id } = match.params;
   const apiInfo: BaseApiInfo = apiInterpreter.getApiInfo(Number(id));
   const BaseCodeHtml: string = Prism.highlight(
@@ -28,13 +29,21 @@ const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
     "javascript"
   );
   const runCurrentApiTest = () => {
+    if (progress) return;
     updateProgress(true);
-    apiInfo.fn(10000);
-    apiInfo.fn(50000);
-    apiInfo.fn(100000);
+    setTypes(true);
+    setTimeout(() => {
+      // apiInfo.fn(100000);
+      // apiInfo.fn(500000);
+      apiInfo.fn(10000000);
+      // updateProgress(false);
+    }, 300);
+
+    // updateProgress(false);
   };
   return (
     <div className={"api-view-box"}>
+      <div className={`test-api ${types ? "test-go" : ""}`}>123</div>
       <article className={apiStyle.main}>
         <section>
           <Typography variant="h3" gutterBottom>

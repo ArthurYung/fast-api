@@ -34,6 +34,9 @@ function beginTimer(name: string, root: number | boolean): number {
 function endTimer(id: number, isError?: boolean): void {
   const currentInfo: TimerInfo = timerTree[id];
   const nowTime = window.performance.now();
+  if (!currentInfo) {
+    return;
+  }
   if (currentInfo.status === 2) {
     return;
   }
@@ -42,7 +45,6 @@ function endTimer(id: number, isError?: boolean): void {
   currentInfo.endTime = nowTime;
 
   if (currentInfo.parentId) {
-    console.log(currentInfo.parentId);
     timerTree[currentInfo.parentId].children.push(id);
   }
 

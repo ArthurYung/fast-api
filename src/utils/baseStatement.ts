@@ -19,6 +19,7 @@ function createFunction(
       _endTime(_timeId)
     }
   `;
+  console.log(funStr);
   // eslint-disable-next-line
   const fn = new Function("$n", "$name", "_newTime", "_endTime", funStr);
   return function(num: number) {
@@ -110,7 +111,7 @@ class Interpreter {
       baseCode,
       loop,
       root,
-      name
+      name,
     };
   }
 
@@ -118,7 +119,7 @@ class Interpreter {
     return this._api.map((apiInfo: BaseApiInfo) => {
       return {
         name: apiInfo.name,
-        id: apiInfo.id
+        id: apiInfo.id,
       };
     });
   }
