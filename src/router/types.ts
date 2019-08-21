@@ -5,5 +5,5 @@ export type RouterMap = {
 };
 
 export type ApiParams = {
-  name: string;
+  id: string;
 };

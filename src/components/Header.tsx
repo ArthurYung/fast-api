@@ -66,7 +66,7 @@ class Header extends React.Component<RouteComponentProps> {
       navType = 1;
     }
     if (/^\/log(\/?)/.test(pathname)) {
-      navType = 2;
+      navType = 3;
     }
     const navProps: NavBoxProps =
       HEADER_PROPS_MAP[navType] || HEADER_PROPS_MAP[0];

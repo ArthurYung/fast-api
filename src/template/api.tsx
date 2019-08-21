@@ -1,9 +1,5 @@
-interface LoopsTemplate {
-  [x: string]: string;
-}
-
-const Loops: LoopsTemplate = {
-  __root: "empty",
+const Loops = {
+  __root__: "empty",
   for: "<for>",
   for_less: "<for_less>",
   while: "<while>",

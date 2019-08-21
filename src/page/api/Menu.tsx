@@ -8,24 +8,26 @@ import TripOrigin from "@material-ui/icons/TripOrigin";
 import PlayArrow from "@material-ui/icons/PlayArrow";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 
+interface ApiMenuInfo {
+  name: string;
+  id: number;
+}
 interface MenuProps extends RouteComponentProps {
-  menuList?: string[];
+  menuList: ApiMenuInfo[];
 }
 
-const Menu: React.FC<MenuProps> = ({ history, menuList = [] }) => (
+const Menu: React.FC<MenuProps> = ({ history, menuList }: MenuProps) => (
   <div className={"api-menu"}>
     <List>
-      {menuList.map((menuName: string, i) => (
+      {menuList.map(({ name, id }: ApiMenuInfo, i) => (
         <ListItem key={i} className={"api-menu-item"}>
           <TripOrigin />
-          <ListItemText primary={menuName} />
+          <ListItemText primary={name} />
           <ListItemSecondaryAction>
             <IconButton
               edge="end"
               aria-label="action"
-              onClick={() =>
-                history.push(`/api/${menuName.replace(/\./g, "_")}`)
-              }
+              onClick={() => history.push(`/api/${id}`)}
             >
               <PlayArrow />
             </IconButton>

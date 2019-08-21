@@ -2,19 +2,15 @@ import React from "react";
 import { RouteWithSubRoutes } from "@/router/index";
 import { RouterMap } from "@/router/types";
 import Menu from "./Menu";
-// import { Loops } from "@/template/api";
-// import createBaseCode from "@/utils/baseStatement";
+import interpreter from "@/utils/baseStatement";
 
-// const test = createBaseCode(Loops.forEach);
-// console.log(test);
-// test(50000);
-const MENU_MAP = ["api1", "api1.api2", "api2.api3", "api3"];
+const MenuList = interpreter.getApiMenuList();
 
 const Test = ({ routes }: { routes: RouterMap[] }) => {
   return (
-    <div>
-      <Menu menuList={MENU_MAP} />
-      <div>
+    <div className={"api-box"}>
+      <Menu menuList={MenuList} />
+      <div className={"api-view"}>
         {routes.map((route: RouterMap, i: number) => (
           <RouteWithSubRoutes key={i} {...route} />
         ))}
