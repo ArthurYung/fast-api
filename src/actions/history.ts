@@ -4,10 +4,14 @@ export type HISTORY_RESULT = typeof HISTORY_RESULT;
 export interface TimerDataInfo {
   id: number;
   name: string;
-  useTime: number;
-  status: number;
-  date?: number;
+  root: boolean;
+  startTime: number;
+  endTime: number;
+  parentId: number | null;
+  status: number; // 0 - info, 1: success, 2: error
   children: TimerDataInfo[];
+  useTime: number;
+  date: number;
 }
 
 export interface HistoryActionType {
@@ -20,6 +24,6 @@ export function updateHistoryResultData(
 ): HistoryActionType {
   return {
     type: HISTORY_RESULT,
-    payload: timerData
+    payload: timerData,
   };
 }

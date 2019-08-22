@@ -10,7 +10,8 @@ import Prism from "prismjs";
 import Code from "@material-ui/icons/Code";
 import Replay from "@material-ui/icons/Replay";
 import Chip from "@material-ui/core/Chip";
-import { BaseApiInfo, TimerDataInfo } from "@/utils/types";
+import { BaseApiInfo } from "@/utils/types";
+import { TimerDataInfo } from "@/actions/history";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import common from "@/container/apiMain";
@@ -26,7 +27,7 @@ const View: React.FC<viewProps> = ({
   match,
   progress,
   updateProgress,
-  updateHistoryList
+  updateHistoryList,
 }) => {
   const [value, setValue] = useState("50000");
   const { id } = match.params;

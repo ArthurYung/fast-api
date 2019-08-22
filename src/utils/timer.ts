@@ -1,78 +1,87 @@
-import { TimerDataInfo } from "./types";
+import { TimerInfo } from "./types";
 
-interface TimerInfo {
-  id: number;
-  name: string;
-  root: boolean;
-  startTime: number;
-  endTime: number;
-  parentId: number | null;
-  status: number; // 0 - info, 1: success, 2: error
-  children: number[];
+let _uid: number = 0;
+let tempTimerTree: { [x: number]: TimerInfo } = {};
+
+function createUid(): number {
+  _uid++;
+  return _uid;
 }
 
-let id: number = 0;
-const timerTree: { [x: number]: TimerInfo } = {};
+function __initTimerInfo(): TimerInfo {
+  const currId = createUid();
+  const date = Date.now();
+  tempTimerTree[currId] = {
+    name: "",
+    root: true,
+    startTime: 0,
+    endTime: 0,
+    useTime: 0,
+    status: 0,
+    date,
+    parentId: null,
+    children: [],
+    id: currId,
+  };
 
-function beginTimer(name: string, root: number | boolean): number {
-  id++;
-  const timerId = id;
-  const isRoot = root === true;
-  const timerInfo = {} as TimerInfo;
-  timerInfo.name = name;
-  timerInfo.root = isRoot;
+  return tempTimerTree[currId];
+}
+
+function __getHandleTimerData(id: number): TimerInfo<any> {
+  const getTimerInfo = (_id: number): TimerInfo<any> => {
+    const timerInfo: TimerInfo<any> = { ...tempTimerTree[_id] };
+    const { startTime, endTime, children } = timerInfo;
+
+    timerInfo.useTime = startTime - endTime;
+
+    timerInfo.children = children.map((__id: number) => getTimerInfo(__id));
+
+    delete tempTimerTree[id];
+    return timerInfo;
+  };
+
+  return getTimerInfo(id);
+}
+
+interface beginTimerProps {
+  n: string;
+  r: boolean;
+  p?: number;
+}
+
+function beginTimer({ n, r, p }: beginTimerProps): number {
+  const timerInfo = __initTimerInfo();
+
+  timerInfo.name = n;
+  timerInfo.root = r;
   timerInfo.startTime = window.performance.now();
-  timerInfo.parentId = isRoot ? null : (root as number);
-  timerInfo.status = 0;
-  timerInfo.children = [];
-  timerInfo.id = timerId;
+  timerInfo.parentId = p || null;
 
-  timerTree[timerId] = timerInfo;
-  return timerId;
+  return timerInfo.id;
 }
 
-function endTimer(id: number, isError?: boolean): void | TimerDataInfo {
-  const currentInfo: TimerInfo = timerTree[id];
-  const nowTime = window.performance.now();
+function runError(id: number) {
+  if (tempTimerTree[id]) {
+    tempTimerTree[id].status = 2;
+  }
+}
 
-  if (isError) {
-    currentInfo.status = 2;
-    return;
+function endTimer(id: number): void | TimerInfo<any> {
+  const timerInfo: TimerInfo = tempTimerTree[id];
+
+  timerInfo.endTime = window.performance.now();
+
+  if (timerInfo.status === 0) {
+    timerInfo.status = 1;
   }
 
-  if (currentInfo.status === 0) {
-    currentInfo.status = 1;
+  if (timerInfo.parentId) {
+    tempTimerTree[timerInfo.parentId].children.push(id);
   }
 
-  currentInfo.endTime = nowTime;
-
-  if (currentInfo.parentId) {
-    timerTree[currentInfo.parentId].children.push(id);
-  }
-
-  if (currentInfo.root) {
+  if (timerInfo.root) {
     return __getHandleTimerData(id);
   }
 }
 
-function __getHandleTimerData(id: number): TimerDataInfo {
-  const getDataInfo = (id: number): TimerDataInfo => {
-    const info = { ...timerTree[id] };
-    const dataInfo = {} as TimerDataInfo;
-    const children = info.children.map((id: number) => {
-      return getDataInfo(id);
-    });
-
-    dataInfo.id = id;
-    dataInfo.name = info.name;
-    dataInfo.status = info.status;
-    dataInfo.useTime = info.endTime - info.startTime;
-    dataInfo.children = children;
-    dataInfo.date = Date.now();
-    delete timerTree[id];
-    return dataInfo;
-  };
-  return getDataInfo(id);
-}
-
-export { beginTimer, endTimer };
+export { beginTimer, endTimer, runError };
