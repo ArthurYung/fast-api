@@ -32,7 +32,7 @@ function __getHandleTimerData(id: number): TimerInfo<any> {
     const timerInfo: TimerInfo<any> = { ...tempTimerTree[_id] };
     const { startTime, endTime, children } = timerInfo;
 
-    timerInfo.useTime = startTime - endTime;
+    timerInfo.useTime = endTime - startTime;
 
     timerInfo.children = children.map((__id: number) => getTimerInfo(__id));
 
