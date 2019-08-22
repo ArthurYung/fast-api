@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // eslint-disable-next-line
 import { match } from "react-router-dom";
 import { ApiParams } from "@/router/types";
@@ -11,15 +11,25 @@ import Code from "@material-ui/icons/Code";
 import Replay from "@material-ui/icons/Replay";
 import Chip from "@material-ui/core/Chip";
 import { BaseApiInfo } from "@/utils/types";
-import connect from "@/container/apiMain";
+import { TimerDataInfo } from "@/actions/history";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import common from "@/container/apiMain";
 
 interface viewProps {
   match: match<ApiParams>;
   progress: boolean;
-  updateProgress: (state: boolean) => void;
+  updateProgress: (status: boolean) => void;
+  updateHistoryList: (info: TimerDataInfo) => void;
 }
 
-const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
+const View: React.FC<viewProps> = ({
+  match,
+  progress,
+  updateProgress,
+  updateHistoryList,
+}) => {
+  const [value, setValue] = useState("50000");
   const { id } = match.params;
   const apiInfo: BaseApiInfo = apiInterpreter.getApiInfo(Number(id));
   const BaseCodeHtml: string = Prism.highlight(
@@ -27,14 +37,21 @@ const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
     Prism.languages.javascript,
     "javascript"
   );
+  function handleChange(e: any) {
+    setValue(e.target.value);
+  }
   const runCurrentApiTest = () => {
+    if (progress) return;
     updateProgress(true);
-    apiInfo.fn(10000);
-    apiInfo.fn(50000);
-    apiInfo.fn(100000);
+    setTimeout(() => {
+      const timerData: TimerDataInfo = apiInfo.fn(Number(value));
+      console.log(timerData);
+      updateHistoryList(timerData);
+      updateProgress(false);
+    }, 200);
   };
   return (
-    <div className={"api-view-box"}>
+    <div className={"api-content-box"}>
       <article className={apiStyle.main}>
         <section>
           <Typography variant="h3" gutterBottom>
@@ -44,7 +61,6 @@ const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
             variant="contained"
             color="inherit"
             className={apiStyle.button}
-            onClick={() => updateProgress(false)}
           >
             Free Code
             <Code />
@@ -58,6 +74,29 @@ const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
             Replay
             <Replay />
           </Button>
+        </section>
+        <section className={apiStyle.times}>
+          <Typography variant="subtitle1" gutterBottom>
+            Number Of Times:
+          </Typography>
+          <RadioGroup
+            aria-label="gender"
+            name="gender1"
+            className={apiStyle.radio}
+            value={value}
+            onChange={handleChange}
+          >
+            <Radio value="50000" />
+            <span className={apiStyle.radioLabel}>50000</span>
+            <Radio value="100000" />
+            <span className={apiStyle.radioLabel}>100000</span>
+            <Radio value="500000" />
+            <span className={apiStyle.radioLabel}>500000</span>
+            <Radio value="1000000" />
+            <span className={apiStyle.radioLabel}>1000000</span>
+            <Radio value="10000000" />
+            <span className={apiStyle.radioLabel}>10000000</span>
+          </RadioGroup>
         </section>
         <section className={apiStyle.subTitle}>
           <Typography variant="subtitle1" gutterBottom>
@@ -78,4 +117,4 @@ const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
   );
 };
 
-export default connect(View);
+export default common(View);

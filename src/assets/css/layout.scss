@@ -6,6 +6,10 @@
       justify-content: center;
       a {
         color: #fff;
+        width: 100%;
+        button {
+          width: 100%;
+        }
       }
     }
   }
@@ -40,7 +44,7 @@
       @if $color == white {
         color: $color_txt_white;
       } @else if $color == red {
-        color: $color_txt_red;
+        color: $color_txt_yellow;
       } @else if $color == green {
         color: $color_txt_green;
       } @else if $color == blue {

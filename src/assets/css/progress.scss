@@ -1,0 +1,38 @@
+$screenWidth: 2560, 1920, 1440, 1200, 800, 475, 375;
+
+.app-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  &-bar {
+    width: 200px;
+    height: 4px;
+    background: $theme_main;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.65, 0.815, 0.735, 0.395);
+    animation-iteration-count: infinite;
+  }
+}
+
+@each $var in $screenWidth {
+  @media (max-width: #{$var}px) {
+    .app-progress-bar {
+      animation-name: progress-transform-#{$var};
+    }
+  }
+}
+
+@each $var in $screenWidth {
+  @keyframes progress-transform-#{$var} {
+    from {
+      transform: translate3d(0px, 0px, 0px);
+    }
+    75% {
+      transform: translate3d(#{$var + 200}px, 0px, 0px);
+    }
+    to {
+      transform: translate3d(#{$var + 200}px, 0px, 0px);
+    }
+  }
+}

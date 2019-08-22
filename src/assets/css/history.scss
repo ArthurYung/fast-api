@@ -1,0 +1,38 @@
+.history-box {
+  min-width: 320px;
+}
+.result {
+  &-card {
+    text-align: left;
+    & + & {
+      margin-top: 18px;
+    }
+    &-item {
+      margin: 4px 0;
+    }
+  }
+  &-success {
+    background-color: $success !important;
+  }
+  &-error {
+    background-color: $error !important;
+  }
+  &-active {
+    &-success {
+      color: $success_txt;
+    }
+    &-error {
+      color: $error_txt;
+    }
+  }
+}
+
+.card-item {
+  &-root {
+    background-color: $base_bg;
+    padding: 0 6px;
+  }
+  &-time {
+    margin-left: 12px;
+  }
+}

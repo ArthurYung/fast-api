@@ -10,10 +10,15 @@ export interface BaseApiInfo {
   expression: string | undefined;
 }
 
-export interface TimerDataInfo {
+export interface TimerInfo<T = number> {
   id: number;
   name: string;
+  root: boolean;
+  startTime: number;
+  endTime: number;
+  parentId: number | null;
+  status: number; // 0 - info, 1: success, 2: error
+  children: T[];
   useTime: number;
-  status: number;
-  children: TimerDataInfo[];
+  date: number;
 }
