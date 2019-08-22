@@ -3,7 +3,7 @@ import { RouteWithSubRoutes } from "@/router/index";
 import { RouterMap } from "@/router/types";
 import Menu from "./Menu";
 import interpreter from "@/utils/baseStatement";
-
+import HistoryView from "@/components/HistoryView";
 const MenuList = interpreter.getApiMenuList();
 
 const Test = ({ routes }: { routes: RouterMap[] }) => {
@@ -11,9 +11,12 @@ const Test = ({ routes }: { routes: RouterMap[] }) => {
     <div className={"api-box"}>
       <Menu menuList={MenuList} />
       <div className={"api-view"}>
-        {routes.map((route: RouterMap, i: number) => (
-          <RouteWithSubRoutes key={i} {...route} />
-        ))}
+        <div className={"api-context"}>
+          {routes.map((route: RouterMap, i: number) => (
+            <RouteWithSubRoutes key={i} {...route} />
+          ))}
+        </div>
+        <HistoryView />
       </div>
     </div>
   );

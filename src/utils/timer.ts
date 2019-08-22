@@ -66,7 +66,7 @@ function __getHandleTimerData(id: number): TimerDataInfo {
     dataInfo.status = info.status;
     dataInfo.useTime = info.endTime - info.startTime;
     dataInfo.children = children;
-
+    dataInfo.date = Date.now();
     delete timerTree[id];
     return dataInfo;
   };

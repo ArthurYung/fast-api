@@ -8,3 +8,10 @@ export interface UpdateProgress {
   type: PROGRESS_STATUS;
   payload: boolean;
 }
+
+export function UpdateProgress(status: boolean): UpdateProgress {
+  return {
+    type: PROGRESS_STATUS,
+    payload: status
+  };
+}

@@ -10,15 +10,24 @@ import Prism from "prismjs";
 import Code from "@material-ui/icons/Code";
 import Replay from "@material-ui/icons/Replay";
 import Chip from "@material-ui/core/Chip";
-import { BaseApiInfo } from "@/utils/types";
+import { BaseApiInfo, TimerDataInfo } from "@/utils/types";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import common from "@/container/apiMain";
 
 interface viewProps {
   match: match<ApiParams>;
+  progress: boolean;
+  updateProgress: (status: boolean) => void;
+  updateHistoryList: (info: TimerDataInfo) => void;
 }
 
-const View: React.FC<viewProps> = ({ match }) => {
+const View: React.FC<viewProps> = ({
+  match,
+  progress,
+  updateProgress,
+  updateHistoryList
+}) => {
   const [value, setValue] = useState("50000");
   const { id } = match.params;
   const apiInfo: BaseApiInfo = apiInterpreter.getApiInfo(Number(id));
@@ -31,11 +40,16 @@ const View: React.FC<viewProps> = ({ match }) => {
     setValue(e.target.value);
   }
   const runCurrentApiTest = () => {
-    const j = apiInfo.fn(Number(value));
-    return;
+    if (progress) return;
+    updateProgress(true);
+    setTimeout(() => {
+      const timerData: TimerDataInfo = apiInfo.fn(Number(value));
+      updateHistoryList(timerData);
+      updateProgress(false);
+    }, 200);
   };
   return (
-    <div className={"api-view-box"}>
+    <div className={"api-content-box"}>
       <article className={apiStyle.main}>
         <section>
           <Typography variant="h3" gutterBottom>
@@ -70,16 +84,16 @@ const View: React.FC<viewProps> = ({ match }) => {
             value={value}
             onChange={handleChange}
           >
-            <Radio value="10000" />
-            <span className={apiStyle.radioLabel}>10000</span>
             <Radio value="50000" />
             <span className={apiStyle.radioLabel}>50000</span>
             <Radio value="100000" />
             <span className={apiStyle.radioLabel}>100000</span>
-            <Radio value="200000" />
-            <span className={apiStyle.radioLabel}>200000</span>
+            <Radio value="500000" />
+            <span className={apiStyle.radioLabel}>500000</span>
             <Radio value="1000000" />
             <span className={apiStyle.radioLabel}>1000000</span>
+            <Radio value="10000000" />
+            <span className={apiStyle.radioLabel}>10000000</span>
           </RadioGroup>
         </section>
         <section className={apiStyle.subTitle}>
@@ -101,4 +115,4 @@ const View: React.FC<viewProps> = ({ match }) => {
   );
 };
 
-export default View;
+export default common(View);

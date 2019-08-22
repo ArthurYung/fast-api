@@ -15,5 +15,6 @@ export interface TimerDataInfo {
   name: string;
   useTime: number;
   status: number;
+  date?: number;
   children: TimerDataInfo[];
 }

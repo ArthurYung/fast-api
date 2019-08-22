@@ -18,6 +18,10 @@
   }
   &-view {
     width: 100%;
+    display: flex;
+  }
+  &-context {
+    width: 100%;
     &-box {
       padding: 24px 0;
     }

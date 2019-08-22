@@ -5,7 +5,7 @@ const Loops = {
   while: "<while>",
   while_less: "<while_less>",
   forEach: "<forEach>",
-  map: "<map>"
+  map: "<map>",
 };
 
 export { Loops };
