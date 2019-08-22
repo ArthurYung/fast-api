@@ -34,14 +34,16 @@ function beginTimer(name: string, root: number | boolean): number {
 function endTimer(id: number, isError?: boolean): void | TimerDataInfo {
   const currentInfo: TimerInfo = timerTree[id];
   const nowTime = window.performance.now();
-  if (!currentInfo) {
-    return;
-  }
-  if (currentInfo.status === 2) {
+
+  if (isError) {
+    currentInfo.status = 2;
     return;
   }
 
-  currentInfo.status = isError ? 2 : 1;
+  if (currentInfo.status === 0) {
+    currentInfo.status = 1;
+  }
+
   currentInfo.endTime = nowTime;
 
   if (currentInfo.parentId) {

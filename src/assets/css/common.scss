@@ -10,8 +10,10 @@ $border: 1px solid #ccc;
 
 $theme_main: #3f51b5;
 
-$success: #00da6d;
-$info: #075cff;
-$error: #ff5605;
+$success: $color_txt_green;
+$info: $color_txt_blue;
+$error: #ff2805;
+$success_txt: #00d76b;
+$error_txt: $error;
 
-$base_bg: #e0e0e0
+$base_bg: #e0e0e0;

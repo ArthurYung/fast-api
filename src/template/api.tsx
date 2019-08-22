@@ -6,6 +6,7 @@ const Loops = {
   while_less: "<while_less>",
   forEach: "<forEach>",
   map: "<map>",
+  test: "<for>@s.push:(i)"
 };
 
 export { Loops };

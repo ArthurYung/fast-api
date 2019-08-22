@@ -4,8 +4,8 @@
 .result {
   &-card {
     text-align: left;
-    & +& {
-      margin-top: 18px
+    & + & {
+      margin-top: 18px;
     }
     &-item {
       margin: 4px 0;
@@ -16,6 +16,14 @@
   }
   &-error {
     background-color: $error !important;
+  }
+  &-active {
+    &-success {
+      color: $success_txt;
+    }
+    &-error {
+      color: $error_txt;
+    }
   }
 }
 

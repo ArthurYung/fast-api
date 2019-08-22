@@ -44,6 +44,7 @@ const View: React.FC<viewProps> = ({
     updateProgress(true);
     setTimeout(() => {
       const timerData: TimerDataInfo = apiInfo.fn(Number(value));
+      console.log(timerData);
       updateHistoryList(timerData);
       updateProgress(false);
     }, 200);
