@@ -31,7 +31,7 @@ function beginTimer(name: string, root: number | boolean): number {
   return timerId;
 }
 
-function endTimer(id: number, isError?: boolean): void {
+function endTimer(id: number, isError?: boolean): void | TimerDataInfo {
   const currentInfo: TimerInfo = timerTree[id];
   const nowTime = window.performance.now();
   if (!currentInfo) {
@@ -49,11 +49,11 @@ function endTimer(id: number, isError?: boolean): void {
   }
 
   if (currentInfo.root) {
-    __getHandleTimerData(id);
+    return __getHandleTimerData(id);
   }
 }
 
-function __getHandleTimerData(id: number): void {
+function __getHandleTimerData(id: number): TimerDataInfo {
   const getDataInfo = (id: number): TimerDataInfo => {
     const info = { ...timerTree[id] };
     const dataInfo = {} as TimerDataInfo;
@@ -70,7 +70,7 @@ function __getHandleTimerData(id: number): void {
     delete timerTree[id];
     return dataInfo;
   };
-  console.log(getDataInfo(id));
+  return getDataInfo(id);
 }
 
 export { beginTimer, endTimer };

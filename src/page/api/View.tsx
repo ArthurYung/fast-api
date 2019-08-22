@@ -11,16 +11,15 @@ import Code from "@material-ui/icons/Code";
 import Replay from "@material-ui/icons/Replay";
 import Chip from "@material-ui/core/Chip";
 import { BaseApiInfo } from "@/utils/types";
-import connect from "@/container/apiMain";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
 
 interface viewProps {
   match: match<ApiParams>;
-  progress: boolean;
-  updateProgress: (state: boolean) => void;
 }
 
-const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
-  const [types, setTypes] = useState(false);
+const View: React.FC<viewProps> = ({ match }) => {
+  const [value, setValue] = useState("50000");
   const { id } = match.params;
   const apiInfo: BaseApiInfo = apiInterpreter.getApiInfo(Number(id));
   const BaseCodeHtml: string = Prism.highlight(
@@ -28,22 +27,15 @@ const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
     Prism.languages.javascript,
     "javascript"
   );
+  function handleChange(e: any) {
+    setValue(e.target.value);
+  }
   const runCurrentApiTest = () => {
-    if (progress) return;
-    updateProgress(true);
-    setTypes(true);
-    setTimeout(() => {
-      // apiInfo.fn(100000);
-      // apiInfo.fn(500000);
-      apiInfo.fn(10000000);
-      // updateProgress(false);
-    }, 300);
-
-    // updateProgress(false);
+    const j = apiInfo.fn(Number(value));
+    return;
   };
   return (
     <div className={"api-view-box"}>
-      <div className={`test-api ${types ? "test-go" : ""}`}>123</div>
       <article className={apiStyle.main}>
         <section>
           <Typography variant="h3" gutterBottom>
@@ -53,7 +45,6 @@ const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
             variant="contained"
             color="inherit"
             className={apiStyle.button}
-            onClick={() => updateProgress(false)}
           >
             Free Code
             <Code />
@@ -67,6 +58,29 @@ const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
             Replay
             <Replay />
           </Button>
+        </section>
+        <section className={apiStyle.times}>
+          <Typography variant="subtitle1" gutterBottom>
+            Number Of Times:
+          </Typography>
+          <RadioGroup
+            aria-label="gender"
+            name="gender1"
+            className={apiStyle.radio}
+            value={value}
+            onChange={handleChange}
+          >
+            <Radio value="10000" />
+            <span className={apiStyle.radioLabel}>10000</span>
+            <Radio value="50000" />
+            <span className={apiStyle.radioLabel}>50000</span>
+            <Radio value="100000" />
+            <span className={apiStyle.radioLabel}>100000</span>
+            <Radio value="200000" />
+            <span className={apiStyle.radioLabel}>200000</span>
+            <Radio value="1000000" />
+            <span className={apiStyle.radioLabel}>1000000</span>
+          </RadioGroup>
         </section>
         <section className={apiStyle.subTitle}>
           <Typography variant="subtitle1" gutterBottom>
@@ -87,4 +101,4 @@ const View: React.FC<viewProps> = ({ match, progress, updateProgress }) => {
   );
 };
 
-export default connect(View);
+export default View;

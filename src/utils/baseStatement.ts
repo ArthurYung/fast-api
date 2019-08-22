@@ -16,14 +16,15 @@ function createFunction(
     } catch(e){
       _endTime(_timeId, true)
     } finally {
-      _endTime(_timeId)
+      let _result = _endTime(_timeId)
+      return _result
     }
   `;
   console.log(funStr);
   // eslint-disable-next-line
   const fn = new Function("$n", "$name", "_newTime", "_endTime", funStr);
   return function(num: number) {
-    fn(num, name + "(" + num + ")", beginTimer, endTimer);
+    return fn(num, name + "(" + num + ")", beginTimer, endTimer);
   };
 }
 
@@ -73,7 +74,7 @@ class Interpreter {
     const matchResult: RegExpMatchArray =
       expression.match(BASE_EXPRESSION_MATCH) || [];
 
-    const initCode = matchResult[2];
+    const init = matchResult[2];
     const loopName = matchResult[4];
     const api = matchResult[7];
     const param = matchResult[9];
@@ -84,7 +85,7 @@ class Interpreter {
     let name = apiName;
     let loop = loopName !== "empty";
     let runtimeCode = "" + root;
-
+    let initCode = init;
     if (api) {
       runtimeCode += root ? `.${apiName}` : apiName;
     }
@@ -93,8 +94,11 @@ class Interpreter {
     }
 
     if (loop) {
-      const loopCode = baseCodeMap["__" + (loopName || "for")] || "";
-      baseCode = loopCode.replace(/<body>/, runtimeCode);
+      const loopCode = baseCodeMap["__" + (loopName || "for")] || { code: "" };
+      baseCode = loopCode.code.replace(/<body>/, runtimeCode);
+      if (loopCode.init) {
+        initCode = loopCode.init + (init || "");
+      }
     } else {
       baseCode = runtimeCode;
     }
@@ -111,7 +115,7 @@ class Interpreter {
       baseCode,
       loop,
       root,
-      name,
+      name
     };
   }
 
@@ -119,7 +123,7 @@ class Interpreter {
     return this._api.map((apiInfo: BaseApiInfo) => {
       return {
         name: apiInfo.name,
-        id: apiInfo.id,
+        id: apiInfo.id
       };
     });
   }
