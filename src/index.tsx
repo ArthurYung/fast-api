@@ -12,12 +12,3 @@ apiInterpreter.init([Loops]);
 ReactDOM.render(<App />, document.getElementById("root"));
 
 serviceWorker.unregister();
-
-const arr2 = new Array(50000);
-console.time("for");
-for (let i = 0; i < 50000; i++) {}
-console.timeEnd("for");
-
-console.time("forEach");
-arr2.forEach((_, $i) => {});
-console.timeEnd("forEach");
