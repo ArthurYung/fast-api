@@ -1,17 +1,19 @@
 import loopCodeMap from "./loopCode";
 import { BaseApiInfo } from "./types";
 import { beginTimer, endTimer, runError } from "./baseTimer";
+import Mock from "./mock";
 
-const BASE_EXPRESSION_MATCH: RegExp = /^((.+?)\|)?(<(.+?)>)?(@(.+?):)?(api)?(\((.+?)\))?/;
+const BASE_EXPRESSION_MATCH: RegExp = /^((.+?)\|)?(<(.+?)>)?(@(.+?):)?(api)?(\(\((.+?)\)\))?/;
 
 function __createFunction(
   initCode: string,
   bodyCode: string,
-  name: string
+  name: string,
+  uid: string
 ): Function {
   const funStr = `
     ${initCode || ""}
-    let _timeId = _newTime($name)
+    let _timeId = _newTime($name, _uid)
     try {
       ${bodyCode || ""}
     } catch(e){
@@ -21,18 +23,29 @@ function __createFunction(
       return _result
     }
   `;
+  console.log(funStr);
   // eslint-disable-next-line
   const fn = new Function(
     "$n",
+    "$Mock",
     "$name",
     "_newTime",
     "_endTime",
     "_runError",
+    "_uid",
     funStr
   );
 
   return function(num: number) {
-    return fn(num, name + "(" + num + ")", beginTimer, endTimer, runError);
+    return fn(
+      num,
+      Mock,
+      name + "(" + num + ")",
+      beginTimer,
+      endTimer,
+      runError,
+      uid
+    );
   };
 }
 
@@ -130,11 +143,13 @@ class Interpreter {
       baseCode = runtimeCode;
     }
 
-    const name =
-      (_defineRoot === "window" ? _isUsedApi : runtimeStatement.join(".")) ||
-      key;
+    const name = __root__
+      ? __root__ === "window"
+        ? key
+        : [__root__, key].join(".")
+      : key;
 
-    const runtimeFn = __createFunction(initCode, baseCode, name);
+    const runtimeFn = __createFunction(initCode, baseCode, name, apiInfo.id);
 
     apiInfo.initCode = initCode;
     apiInfo.baseCode = baseCode;

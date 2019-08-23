@@ -25,9 +25,7 @@ const MyCard: React.FC<{ info: TimerDataInfo }> = ({ info }) => {
 
   const showMenu = Boolean(anchorEl);
   const resultClassName = info.status === 2 ? "result-error" : "result-success";
-  const activeClassName =
-    info.status === 2 ? "result-active-error" : "result-active-success";
-  console.log(info);
+
   const timerChildList: ChildTimerInfo[] = [];
 
   function deepChild(child: TimerDataInfo[], root: string = "") {

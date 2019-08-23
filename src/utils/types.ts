@@ -11,6 +11,7 @@ export interface BaseApiInfo {
 }
 
 export interface TimerInfo {
+  uid: string;
   id: string;
   name: string;
   root: boolean;

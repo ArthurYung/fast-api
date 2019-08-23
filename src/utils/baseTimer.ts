@@ -15,6 +15,7 @@ interface defineApiInfo {
   name: string;
   date: number;
   status: number;
+  uid: string;
   error?: string;
 }
 
@@ -35,7 +36,7 @@ function clearEmptyTimer() {
 /**
  * 初始化一个Timer Object
  */
-function __initApiInfo(): defineApiInfo {
+function __initApiInfo(uid: string): defineApiInfo {
   const currId = createUid();
   const date = Date.now();
   tempTimer[currId] = {
@@ -45,7 +46,8 @@ function __initApiInfo(): defineApiInfo {
     useTime: 0,
     status: 0,
     date,
-    id: currId
+    id: currId,
+    uid
   };
 
   return tempTimer[currId];
@@ -66,10 +68,10 @@ function __parseTimerInfo(info: defineApiInfo): TimerInfo {
 /**
  * 开始计时
  */
-function beginTimer(name: string): string {
+function beginTimer(name: string, uid: string): string {
   clearEmptyTimer();
 
-  const timerInfo = __initApiInfo();
+  const timerInfo = __initApiInfo(uid);
 
   timerInfo.name = name;
   timerInfo.startTime = window.performance.now();

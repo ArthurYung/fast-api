@@ -2,6 +2,7 @@ export const HISTORY_RESULT = "HISTORY_RESULT";
 export type HISTORY_RESULT = typeof HISTORY_RESULT;
 
 export interface TimerDataInfo {
+  uid: string;
   id: string;
   name: string;
   root: boolean;
