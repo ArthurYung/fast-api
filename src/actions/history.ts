@@ -2,16 +2,17 @@ export const HISTORY_RESULT = "HISTORY_RESULT";
 export type HISTORY_RESULT = typeof HISTORY_RESULT;
 
 export interface TimerDataInfo {
-  id: number;
+  id: string;
   name: string;
   root: boolean;
   startTime: number;
   endTime: number;
-  parentId: number | null;
+  parentId: string | null;
   status: number; // 0 - info, 1: success, 2: error
   children: TimerDataInfo[];
   useTime: number;
   date: number;
+  error?: string;
 }
 
 export interface HistoryActionType {
@@ -24,6 +25,6 @@ export function updateHistoryResultData(
 ): HistoryActionType {
   return {
     type: HISTORY_RESULT,
-    payload: timerData,
+    payload: timerData
   };
 }

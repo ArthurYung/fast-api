@@ -5,20 +5,21 @@ export interface BaseApiInfo {
   initCode: string;
   loop: boolean;
   root: string | undefined;
-  id: number;
+  id: string;
   key: string;
   expression: string | undefined;
 }
 
-export interface TimerInfo<T = number> {
-  id: number;
+export interface TimerInfo {
+  id: string;
   name: string;
   root: boolean;
   startTime: number;
   endTime: number;
-  parentId: number | null;
+  parentId: string | null;
   status: number; // 0 - info, 1: success, 2: error
-  children: T[];
+  children: TimerInfo[];
   useTime: number;
   date: number;
+  error?: string;
 }
