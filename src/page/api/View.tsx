@@ -27,11 +27,11 @@ const View: React.FC<viewProps> = ({
   match,
   progress,
   updateProgress,
-  updateHistoryList,
+  updateHistoryList
 }) => {
   const [value, setValue] = useState("50000");
   const { id } = match.params;
-  const apiInfo: BaseApiInfo = apiInterpreter.getApiInfo(Number(id));
+  const apiInfo: BaseApiInfo = apiInterpreter.getApiInfo(id);
   const BaseCodeHtml: string = Prism.highlight(
     apiInfo.baseCode,
     Prism.languages.javascript,
@@ -45,7 +45,6 @@ const View: React.FC<viewProps> = ({
     updateProgress(true);
     setTimeout(() => {
       const timerData: TimerDataInfo = apiInfo.fn(Number(value));
-      console.log(timerData);
       updateHistoryList(timerData);
       updateProgress(false);
     }, 200);

@@ -27,7 +27,7 @@ const MyCard: React.FC<{ info: TimerDataInfo }> = ({ info }) => {
   const resultClassName = info.status === 2 ? "result-error" : "result-success";
   const activeClassName =
     info.status === 2 ? "result-active-error" : "result-active-success";
-
+  console.log(info);
   const timerChildList: ChildTimerInfo[] = [];
 
   function deepChild(child: TimerDataInfo[], root: string = "") {
@@ -85,7 +85,11 @@ const MyCard: React.FC<{ info: TimerDataInfo }> = ({ info }) => {
           </CardContent>
           <Divider />
           <CardContent>
-            <div className={activeClassName}>use time: {info.useTime}ms</div>
+            {info.status === 1 ? (
+              <div className="result-active-success">use: {info.useTime}ms</div>
+            ) : (
+              <div className="result-active-error">{info.error}</div>
+            )}
           </CardContent>
         </Card>
       </Grow>

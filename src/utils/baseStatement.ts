@@ -1,6 +1,6 @@
 import loopCodeMap from "./loopCode";
 import { BaseApiInfo } from "./types";
-import { beginTimer, endTimer, runError } from "./timer";
+import { beginTimer, endTimer, runError } from "./baseTimer";
 
 const BASE_EXPRESSION_MATCH: RegExp = /^((.+?)\|)?(<(.+?)>)?(@(.+?):)?(api)?(\((.+?)\))?/;
 
@@ -11,11 +11,11 @@ function __createFunction(
 ): Function {
   const funStr = `
     ${initCode || ""}
-    let _timeId = _newTime({n: $name, r: true})
+    let _timeId = _newTime($name)
     try {
       ${bodyCode || ""}
     } catch(e){
-      _runError(_timeId)
+      _runError(_timeId, e.message)
     } finally {
       let _result = _endTime(_timeId)
       return _result
@@ -44,7 +44,7 @@ interface apiTemplateList {
 class Interpreter {
   public _api: BaseApiInfo[];
   public _id: number;
-  public _apiMap: { [x: number]: BaseApiInfo };
+  public _apiMap: { [x: string]: BaseApiInfo };
 
   constructor() {
     this._api = [];
@@ -53,8 +53,7 @@ class Interpreter {
   }
 
   private _getId() {
-    this._id++;
-    return this._id;
+    return ++this._id + "";
   }
 
   private _initBaseApiInfo(
@@ -72,7 +71,7 @@ class Interpreter {
       initCode: "",
       loop: true,
       expression,
-      fn: () => {},
+      fn: () => {}
     };
   }
 
@@ -147,16 +146,16 @@ class Interpreter {
     this._apiMap[apiInfo.id] = apiInfo;
   }
 
-  public getApiMenuList(): { name: string; id: number }[] {
+  public getApiMenuList(): { name: string; id: string }[] {
     return this._api.map((apiInfo: BaseApiInfo) => {
       return {
         name: apiInfo.name,
-        id: apiInfo.id,
+        id: apiInfo.id
       };
     });
   }
 
-  public getApiInfo(id: number): BaseApiInfo {
+  public getApiInfo(id: string): BaseApiInfo {
     return this._apiMap[id];
   }
 }

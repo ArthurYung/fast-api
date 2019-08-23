@@ -10,7 +10,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 
 interface ApiMenuInfo {
   name: string;
-  id: number;
+  id: string;
 }
 interface MenuProps extends RouteComponentProps {
   menuList: ApiMenuInfo[];
