@@ -19,8 +19,14 @@ interface ChildTimerInfo {
   useTime: number;
 }
 
-const MyCard: React.FC<{ info: TimerDataInfo }> = ({ info }) => {
-  const [visible, setVisible] = useState<boolean>(false);
+interface FcProps {
+  info: TimerDataInfo;
+  saveTimer: () => void;
+  deleteTimer: (timerInfo: TimerDataInfo) => void;
+}
+
+const MyCard: React.FC<FcProps> = ({ info, deleteTimer }) => {
+  const [visible, setVisible] = useState<number>(1);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const showMenu = Boolean(anchorEl);
@@ -48,15 +54,17 @@ const MyCard: React.FC<{ info: TimerDataInfo }> = ({ info }) => {
     setAnchorEl(null);
   }
 
-  deepChild(info.children);
+  function deleteCurrInfo() {
+    setVisible(0);
+    handleClose();
+    setTimeout(() => deleteTimer(info), 300);
+  }
 
-  setTimeout(() => {
-    setVisible(true);
-  }, 50);
+  deepChild(info.children);
 
   return (
     <aside className="result-card">
-      <Grow in={visible}>
+      <Grow in={Boolean(visible)}>
         <Card>
           <CardHeader
             avatar={
@@ -103,8 +111,8 @@ const MyCard: React.FC<{ info: TimerDataInfo }> = ({ info }) => {
           }
         }}
       >
-        <MenuItem onClick={handleClose}>delete</MenuItem>
-        <MenuItem onClick={handleClose}>save</MenuItem>
+        <MenuItem onClick={handleClose}>SaveDB</MenuItem>
+        <MenuItem onClick={deleteCurrInfo}>Delete</MenuItem>
       </Menu>
     </aside>
   );

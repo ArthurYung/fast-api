@@ -11,7 +11,8 @@ function __createFunction(
   name: string,
   uid: string
 ): Function {
-  const funStr = `
+  return function(num: number) {
+    const funStr = `
     ${initCode || ""}
     let _timeId = _newTime($name, _uid)
     try {
@@ -23,20 +24,18 @@ function __createFunction(
       return _result
     }
   `;
-  console.log(funStr);
-  // eslint-disable-next-line
-  const fn = new Function(
-    "$n",
-    "$Mock",
-    "$name",
-    "_newTime",
-    "_endTime",
-    "_runError",
-    "_uid",
-    funStr
-  );
 
-  return function(num: number) {
+    // eslint-disable-next-line
+    const fn = new Function(
+      "$n",
+      "$Mock",
+      "$name",
+      "_newTime",
+      "_endTime",
+      "_runError",
+      "_uid",
+      funStr
+    );
     return fn(
       num,
       Mock,

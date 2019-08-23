@@ -1,2 +1,11 @@
 import { connect } from "react-redux";
-export default connect((state: any) => ({ historyData: state.history }));
+import { deleteHistoryTimerData, TimerDataInfo } from "@/actions/history";
+
+export default connect(
+  (state: any) => ({ historyData: state.history }),
+  (dispatch: any) => ({
+    deleteTimer(timerInfo: TimerDataInfo) {
+      dispatch(deleteHistoryTimerData(timerInfo));
+    }
+  })
+);

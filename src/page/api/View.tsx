@@ -45,7 +45,6 @@ const View: React.FC<viewProps> = ({
     updateProgress(true);
     setTimeout(() => {
       const timerData: TimerDataInfo = apiInfo.fn(Number(value));
-      console.log(timerData);
       updateHistoryList(timerData);
       updateProgress(false);
     }, 200);
@@ -86,15 +85,15 @@ const View: React.FC<viewProps> = ({
             value={value}
             onChange={handleChange}
           >
-            <Radio value="50000" />
+            <Radio value="50000" color="primary" />
             <span className={apiStyle.radioLabel}>50000</span>
-            <Radio value="100000" />
+            <Radio value="100000" color="primary" />
             <span className={apiStyle.radioLabel}>100000</span>
-            <Radio value="500000" />
+            <Radio value="500000" color="primary" />
             <span className={apiStyle.radioLabel}>500000</span>
-            <Radio value="1000000" />
+            <Radio value="1000000" color="primary" />
             <span className={apiStyle.radioLabel}>1000000</span>
-            <Radio value="10000000" />
+            <Radio value="10000000" color="primary" />
             <span className={apiStyle.radioLabel}>10000000</span>
           </RadioGroup>
         </section>
