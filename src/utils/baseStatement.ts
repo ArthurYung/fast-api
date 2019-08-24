@@ -1,17 +1,20 @@
 import loopCodeMap from "./loopCode";
-import { BaseApiInfo } from "./types";
+import { BaseApiInfo, DatabaseCodeInfo } from "./types";
 import { beginTimer, endTimer, runError } from "./baseTimer";
+import Mock from "./mock";
 
-const BASE_EXPRESSION_MATCH: RegExp = /^((.+?)\|)?(<(.+?)>)?(@(.+?):)?(api)?(\((.+?)\))?/;
+const BASE_EXPRESSION_MATCH: RegExp = /^((.+?)\|)?(<(.+?)>)?(@(.+?):)?(api)?(\(\((.+?)\)\))?/;
 
 function __createFunction(
   initCode: string,
   bodyCode: string,
-  name: string
+  name: string,
+  uid: string
 ): Function {
-  const funStr = `
+  return function(num: number) {
+    const funStr = `
     ${initCode || ""}
-    let _timeId = _newTime($name)
+    let _timeId = _newTime($name, _uid)
     try {
       ${bodyCode || ""}
     } catch(e){
@@ -21,18 +24,27 @@ function __createFunction(
       return _result
     }
   `;
-  // eslint-disable-next-line
-  const fn = new Function(
-    "$n",
-    "$name",
-    "_newTime",
-    "_endTime",
-    "_runError",
-    funStr
-  );
 
-  return function(num: number) {
-    return fn(num, name + "(" + num + ")", beginTimer, endTimer, runError);
+    // eslint-disable-next-line
+    const fn = new Function(
+      "$n",
+      "$Mock",
+      "$name",
+      "_newTime",
+      "_endTime",
+      "_runError",
+      "_uid",
+      funStr
+    );
+    return fn(
+      num,
+      Mock,
+      name + "(" + num + ")",
+      beginTimer,
+      endTimer,
+      runError,
+      uid
+    );
   };
 }
 
@@ -48,7 +60,7 @@ class Interpreter {
 
   constructor() {
     this._api = [];
-    this._id = 1;
+    this._id = 0;
     this._apiMap = {};
   }
 
@@ -71,7 +83,7 @@ class Interpreter {
       initCode: "",
       loop: true,
       expression,
-      fn: () => {}
+      fn: () => {},
     };
   }
 
@@ -130,11 +142,13 @@ class Interpreter {
       baseCode = runtimeCode;
     }
 
-    const name =
-      (_defineRoot === "window" ? _isUsedApi : runtimeStatement.join(".")) ||
-      key;
+    const name = __root__
+      ? __root__ === "window"
+        ? key
+        : [__root__, key].join(".")
+      : key;
 
-    const runtimeFn = __createFunction(initCode, baseCode, name);
+    const runtimeFn = __createFunction(initCode, baseCode, name, apiInfo.id);
 
     apiInfo.initCode = initCode;
     apiInfo.baseCode = baseCode;
@@ -150,13 +164,18 @@ class Interpreter {
     return this._api.map((apiInfo: BaseApiInfo) => {
       return {
         name: apiInfo.name,
-        id: apiInfo.id
+        id: apiInfo.id,
       };
     });
   }
 
   public getApiInfo(id: string): BaseApiInfo {
     return this._apiMap[id];
+  }
+
+  public getDatabaseInfo(id: string): DatabaseCodeInfo {
+    const { fn, ...databaseInfo } = this._apiMap[id];
+    return databaseInfo;
   }
 }
 

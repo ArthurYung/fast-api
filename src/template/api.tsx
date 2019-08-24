@@ -5,7 +5,8 @@ const Loops = {
   while_less: "<while_less>",
   forEach: "<forEach>",
   map: "<map>",
-  test: "<for>@s.push:(i)",
+  reduce: "<reduce>",
+  test: "let $newArr = []|<for>@$newArr.push(i):"
 };
 
 export { Loops };

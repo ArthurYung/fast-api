@@ -1,37 +1,44 @@
 const __for = {
   code: `for (let i = 0; i < $n; i++) {
-    <body>
-  }`
+  <body>
+}`
 };
 const __for_less = {
   code: `for (let i = $n - 1; i >= 0; i--) {
-    <body>
-  }`
+  <body>
+}`
 };
 const __while = {
   code: `let i = 0; 
-  while(i < $n) {
-    i++; 
-    <body>
-  }`
+while(i < $n) {
+  i++; 
+  <body>
+}`
 };
 const __while_less = {
   code: `let i = $n;
-  while(i--){
-    <body>
-  }`
+while(i--){
+  <body>
+}`
 };
 const __forEach = {
-  init: `let $Array = new Array($n);`,
+  init: `let $Array = $Mock.arr($n)`,
   code: `$Array.forEach((_,$i) => {
-    <body>
-  })`
+  <body>
+})`
 };
 const __map = {
-  init: `let $Array = new Array($n);`,
+  init: `let $Array = $Mock.arr($n)`,
   code: `$Array.map((_,$i) => {
-    <body>
-  })`
+  <body>
+})`
+};
+
+const __reduce = {
+  init: `let $Array = $Mock.numArr($n)`,
+  code: `$Array.reduce(($pre, $cur) => {
+  <body>
+}, 0)`
 };
 
 interface baseCode {
@@ -44,7 +51,8 @@ const BaseCodeMap: { [x: string]: baseCode } = {
   __while,
   __while_less,
   __forEach,
-  __map
+  __map,
+  __reduce
 };
 
 export default BaseCodeMap;
