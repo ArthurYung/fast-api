@@ -60,7 +60,7 @@ class Interpreter {
 
   constructor() {
     this._api = [];
-    this._id = 1;
+    this._id = 0;
     this._apiMap = {};
   }
 
