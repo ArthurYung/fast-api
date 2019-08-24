@@ -4,6 +4,7 @@ export const DELETE_TIMER = "DELETE_TIMER";
 export type DELETE_TIMER = typeof DELETE_TIMER;
 
 export interface TimerDataInfo {
+  saved?: boolean;
   uid: string;
   id: string;
   name: string;
@@ -28,7 +29,7 @@ export function updateHistoryResultData(
 ): HistoryActionType {
   return {
     type: HISTORY_RESULT,
-    payload: timerData
+    payload: timerData,
   };
 }
 
@@ -37,6 +38,6 @@ export function deleteHistoryTimerData(
 ): HistoryActionType {
   return {
     type: DELETE_TIMER,
-    payload: timerData
+    payload: timerData,
   };
 }

@@ -1,0 +1,27 @@
+.message {
+  // &-box {
+  //   width: 100%;
+  //   text-align: left;
+  // }
+  &-box {
+    &-error > .MuiSnackbarContent-root {
+      background-color: $error;
+    }
+    &-info > .MuiSnackbarContent-root {
+      background-color: $info;
+    }
+    &-success > .MuiSnackbarContent-root {
+      background-color: $success;
+    }
+    &-warn > .MuiSnackbarContent-root {
+      background-color: $warn;
+    }
+  }
+  &-content-txt {
+    & > svg {
+      margin-right: 8px;
+    }
+    display: flex;
+    align-items: center;
+  }
+}

@@ -11,6 +11,7 @@ export interface BaseApiInfo {
 }
 
 export interface TimerInfo {
+  saved?: boolean;
   uid: string;
   id: string;
   name: string;
@@ -23,4 +24,22 @@ export interface TimerInfo {
   useTime: number;
   date: number;
   error?: string;
+}
+
+export interface DatabaseCodeInfo {
+  name: string;
+  baseCode: string;
+  initCode?: string;
+  loop?: boolean;
+  root?: string;
+  id: string;
+  key?: string;
+  expression?: string;
+}
+
+export interface DatabaseItem {
+  id?: string;
+  type: number;
+  codeInfo: DatabaseCodeInfo;
+  timerInfo: TimerInfo;
 }

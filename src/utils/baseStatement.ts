@@ -1,5 +1,5 @@
 import loopCodeMap from "./loopCode";
-import { BaseApiInfo } from "./types";
+import { BaseApiInfo, DatabaseCodeInfo } from "./types";
 import { beginTimer, endTimer, runError } from "./baseTimer";
 import Mock from "./mock";
 
@@ -83,7 +83,7 @@ class Interpreter {
       initCode: "",
       loop: true,
       expression,
-      fn: () => {}
+      fn: () => {},
     };
   }
 
@@ -164,13 +164,18 @@ class Interpreter {
     return this._api.map((apiInfo: BaseApiInfo) => {
       return {
         name: apiInfo.name,
-        id: apiInfo.id
+        id: apiInfo.id,
       };
     });
   }
 
   public getApiInfo(id: string): BaseApiInfo {
     return this._apiMap[id];
+  }
+
+  public getDatabaseInfo(id: string): DatabaseCodeInfo {
+    const { fn, ...databaseInfo } = this._apiMap[id];
+    return databaseInfo;
   }
 }
 
