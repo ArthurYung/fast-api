@@ -13,7 +13,12 @@ function __createFunction(
 ): Function {
   return function(num: number) {
     const funStr = `
-    ${initCode || ""}
+    try {
+      ${initCode ? initCode.replace(/(let|const)/g, "var") : ""}
+    } catch(e) {
+      return {error: e.message}
+    }
+
     let _timeId = _newTime($name, _uid)
     try {
       ${bodyCode || ""}
@@ -28,7 +33,7 @@ function __createFunction(
     // eslint-disable-next-line
     const fn = new Function(
       "$n",
-      "$Mock",
+      "$mock",
       "$name",
       "_newTime",
       "_endTime",
@@ -57,11 +62,12 @@ class Interpreter {
   public _api: BaseApiInfo[];
   public _id: number;
   public _apiMap: { [x: string]: BaseApiInfo };
-
+  public _customApiMap: { [x: string]: BaseApiInfo };
   constructor() {
     this._api = [];
     this._id = 0;
     this._apiMap = {};
+    this._customApiMap = {};
   }
 
   private _getId() {
@@ -92,12 +98,21 @@ class Interpreter {
       const { __root__, ...baseTemplateList } = templateList;
 
       Object.keys(baseTemplateList).forEach((key: string) => {
-        this.pushBaseApiInfo(baseTemplateList[key], key, __root__);
+        const apiInfo = this.getBaseApiInfo(
+          baseTemplateList[key],
+          key,
+          __root__
+        );
+        this.pushBaseApiInfo(apiInfo);
       });
     });
   }
-
-  public pushBaseApiInfo(
+  pushBaseApiInfo(apiInfo?: BaseApiInfo) {
+    if (!apiInfo) return;
+    this._api.push(apiInfo);
+    this._apiMap[apiInfo.id] = apiInfo;
+  }
+  public getBaseApiInfo(
     expression: string | undefined,
     key: string,
     __root__?: string
@@ -136,8 +151,10 @@ class Interpreter {
 
     if (_loopName) {
       const loopInfo = loopCodeMap["__" + _loopName];
-      baseCode = loopInfo.code.replace(/<body>/, runtimeCode);
-      initCode = (loopInfo.init || "") + initCode;
+      if (loopInfo) {
+        baseCode = loopInfo.code.replace(/<body>/, runtimeCode);
+        initCode = (loopInfo.init || "") + initCode;
+      }
     } else {
       baseCode = runtimeCode;
     }
@@ -155,9 +172,7 @@ class Interpreter {
     apiInfo.root = _defineRoot;
     apiInfo.name = name;
     apiInfo.fn = runtimeFn;
-
-    this._api.push(apiInfo);
-    this._apiMap[apiInfo.id] = apiInfo;
+    return apiInfo;
   }
 
   public getApiMenuList(): { name: string; id: string }[] {
@@ -174,8 +189,15 @@ class Interpreter {
   }
 
   public getDatabaseInfo(id: string): DatabaseCodeInfo {
-    const { fn, ...databaseInfo } = this._apiMap[id];
+    console.log(this._customApiMap);
+    const apiInfo = this._apiMap[id] || this._customApiMap[id];
+    const { fn, ...databaseInfo } = apiInfo;
     return databaseInfo;
+  }
+
+  public pushCustomApiInfo(info: BaseApiInfo) {
+    const id = info.id;
+    this._customApiMap[id] = info;
   }
 }
 

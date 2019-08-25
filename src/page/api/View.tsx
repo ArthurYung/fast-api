@@ -27,7 +27,7 @@ const View: React.FC<viewProps> = ({
   match,
   progress,
   updateProgress,
-  updateHistoryList
+  updateHistoryList,
 }) => {
   const [value, setValue] = useState("50000");
   const { id } = match.params;
@@ -70,13 +70,13 @@ const View: React.FC<viewProps> = ({
             className={apiStyle.button}
             onClick={runCurrentApiTest}
           >
-            Replay
+            Run Test
             <Replay />
           </Button>
         </section>
         <section className={apiStyle.times}>
           <Typography variant="subtitle1" gutterBottom>
-            Number Of Times:
+            Loop Count:
           </Typography>
           <RadioGroup
             aria-label="gender"
