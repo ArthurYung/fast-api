@@ -14,7 +14,7 @@ const NavBox: React.FC<NavBoxProps> = ({
   text,
   sub = "Click Me",
   to,
-  color
+  color,
 }) => (
   <Link to={to}>
     <ButtonBase className={"nav-button"}>
@@ -36,23 +36,23 @@ const HEADER_PROPS_MAP: { [type: number]: NavBoxProps } = {
   0: {
     text: "FAST API",
     to: "/api",
-    color: "black"
+    color: "black",
   },
   1: {
     text: "ES API",
-    to: "/log",
-    color: "green"
+    to: "/custom",
+    color: "green",
   },
   2: {
     text: "EDIT API",
     to: "/",
-    color: "blue"
+    color: "blue",
   },
   3: {
     text: "CODE TEST",
     to: "/",
-    color: "red"
-  }
+    color: "red",
+  },
 };
 
 class Header extends React.Component<RouteComponentProps> {

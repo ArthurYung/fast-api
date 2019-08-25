@@ -27,8 +27,9 @@ const View: React.FC<viewProps> = ({
   match,
   progress,
   updateProgress,
-  updateHistoryList
+  updateHistoryList,
 }) => {
+  console.log(match);
   const [value, setValue] = useState("50000");
   const { id } = match.params;
   const apiInfo: BaseApiInfo = apiInterpreter.getApiInfo(id);

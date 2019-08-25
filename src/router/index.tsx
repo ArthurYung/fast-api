@@ -5,7 +5,7 @@ import { RouterMap } from "./types";
 const routes: RouterMap[] = [
   {
     path: "/",
-    component: lazy(() => import("../page/home/App"))
+    component: lazy(() => import("../page/home/App")),
   },
   {
     path: "/api",
@@ -13,10 +13,14 @@ const routes: RouterMap[] = [
     routes: [
       {
         path: "/api/:id",
-        component: lazy(() => import("../page/api/View"))
-      }
-    ]
-  }
+        component: lazy(() => import("../page/api/View")),
+      },
+    ],
+  },
+  {
+    path: "/custom",
+    component: lazy(() => import("../page/custom/App")),
+  },
 ];
 
 function RouteWithSubRoutes(route: RouterMap) {
