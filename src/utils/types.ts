@@ -7,6 +7,7 @@ export interface BaseApiInfo {
   root: string | undefined;
   id: string;
   key: string;
+  type: number;
   expression: string | undefined;
 }
 
@@ -35,11 +36,12 @@ export interface DatabaseCodeInfo {
   id: string;
   key?: string;
   expression?: string;
+  type: number;
 }
 
 export interface DatabaseItem {
   id?: string;
-  type: number;
   codeInfo: DatabaseCodeInfo;
   timerInfo: TimerInfo;
+  type: number;
 }

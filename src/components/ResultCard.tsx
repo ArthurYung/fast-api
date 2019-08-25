@@ -11,11 +11,10 @@ import Clear from "@material-ui/icons/Clear";
 import Check from "@material-ui/icons/Check";
 import CardContent from "@material-ui/core/CardContent";
 import Divider from "@material-ui/core/Divider";
-import Message from "./Message";
-import { addData } from "@/utils/indexDB";
+
 import { TimerDataInfo } from "@/actions/history";
 import { dateFormat } from "@/utils/date";
-import interpreter from "@/utils/baseStatement";
+
 interface ChildTimerInfo {
   name: string;
   useTime: number;
@@ -23,24 +22,14 @@ interface ChildTimerInfo {
 
 interface FcProps {
   info: TimerDataInfo;
-  saveTimer: () => void;
+  collectTimer: (info: TimerDataInfo) => void;
   deleteTimer: (timerInfo: TimerDataInfo) => void;
 }
 
-interface MessageInfo {
-  type: string;
-  message: string;
-  visible: boolean;
-}
-
-const MyCard: React.FC<FcProps> = ({ info, deleteTimer }) => {
+const MyCard: React.FC<FcProps> = ({ info, deleteTimer, collectTimer }) => {
   const [visible, setVisible] = useState<number>(1);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [messageInfo, setMessageInfo] = useState<MessageInfo>({
-    type: "success",
-    visible: false,
-    message: "",
-  });
+
   const showMenu = Boolean(anchorEl);
   const resultClassName = info.status === 2 ? "result-error" : "result-success";
 
@@ -74,38 +63,7 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer }) => {
 
   function saveCurrentInfo() {
     handleClose();
-    const databaseItem = {
-      timerInfo: info,
-      codeInfo: interpreter.getDatabaseInfo(info.uid),
-      type: 1,
-    };
-    addData(databaseItem)
-      .then(() => {
-        showMessage({
-          type: "success",
-          message: "Saved timer record",
-        });
-      })
-      .catch((err: any) => {
-        showMessage({
-          type: "warn",
-          message: String(err),
-        });
-      });
-  }
-
-  function showMessage({ type, message }: { type: string; message: string }) {
-    setMessageInfo({
-      type,
-      message,
-      visible: true,
-    });
-  }
-  function closeMessage() {
-    setMessageInfo({
-      ...messageInfo,
-      visible: false,
-    });
+    collectTimer(info);
   }
 
   deepChild(info.children);
@@ -158,15 +116,9 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer }) => {
           },
         }}
       >
-        <MenuItem onClick={saveCurrentInfo}>SaveDB</MenuItem>
+        <MenuItem onClick={saveCurrentInfo}>Collect</MenuItem>
         <MenuItem onClick={deleteCurrInfo}>Delete</MenuItem>
       </Menu>
-      <Message
-        visible={messageInfo.visible}
-        type={messageInfo.type}
-        closed={closeMessage}
-        message={messageInfo.message}
-      />
     </aside>
   );
 };

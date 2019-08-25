@@ -29,18 +29,23 @@ function __createFunction(
       return _result
     }
   `;
+    let fn: Function;
+    try {
+      // eslint-disable-next-line
+      fn = new Function(
+        "$n",
+        "$mock",
+        "$name",
+        "_newTime",
+        "_endTime",
+        "_runError",
+        "_uid",
+        funStr
+      );
+    } catch (e) {
+      return { error: e.message };
+    }
 
-    // eslint-disable-next-line
-    const fn = new Function(
-      "$n",
-      "$mock",
-      "$name",
-      "_newTime",
-      "_endTime",
-      "_runError",
-      "_uid",
-      funStr
-    );
     return fn(
       num,
       Mock,
@@ -89,6 +94,7 @@ class Interpreter {
       initCode: "",
       loop: true,
       expression,
+      type: 1,
       fn: () => {},
     };
   }
@@ -189,7 +195,6 @@ class Interpreter {
   }
 
   public getDatabaseInfo(id: string): DatabaseCodeInfo {
-    console.log(this._customApiMap);
     const apiInfo = this._apiMap[id] || this._customApiMap[id];
     const { fn, ...databaseInfo } = apiInfo;
     return databaseInfo;
@@ -198,6 +203,19 @@ class Interpreter {
   public pushCustomApiInfo(info: BaseApiInfo) {
     const id = info.id;
     this._customApiMap[id] = info;
+  }
+
+  public createCustomInfo(
+    baseCode: string,
+    initCode: string = ""
+  ): BaseApiInfo {
+    const name = "Custom";
+    const apiInfo = this._initBaseApiInfo("", name);
+    apiInfo.initCode = initCode;
+    apiInfo.baseCode = baseCode;
+    apiInfo.type = 2;
+    apiInfo.fn = __createFunction(initCode, baseCode, name, apiInfo.id);
+    return apiInfo;
   }
 }
 

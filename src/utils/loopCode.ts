@@ -22,20 +22,23 @@ while(i--){
 }`,
 };
 const __forEach = {
-  init: `let $Array = $mock.arr($n)`,
+  init: `let $Array = $mock.arr($n);
+`,
   code: `$Array.forEach((_,$i) => {
   <body>
 })`,
 };
 const __map = {
-  init: `let $Array = $mock.arr($n)`,
+  init: `let $Array = $mock.arr($n);
+`,
   code: `$Array.map((_,$i) => {
   <body>
 })`,
 };
 
 const __reduce = {
-  init: `let $Array = $mock.numArr($n)`,
+  init: `let $Array = $mock.numArr($n);
+`,
   code: `$Array.reduce(($pre, $cur) => {
   <body>
 }, 0)`,

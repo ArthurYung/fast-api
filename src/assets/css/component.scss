@@ -25,3 +25,19 @@
     align-items: center;
   }
 }
+
+.editor-content {
+  text-align: left;
+  & > .CodeMirror {
+    @include border-radius;
+  }
+}
+
+.collector-button {
+  text-align: right;
+  margin-bottom: 40px;
+}
+
+.collector-box {
+  width: 320px;
+}

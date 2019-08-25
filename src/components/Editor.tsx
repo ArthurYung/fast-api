@@ -9,12 +9,12 @@ import "codemirror/addon/edit/matchbrackets";
 import "codemirror/addon/hint/javascript-hint";
 import "codemirror/addon/selection/active-line.js";
 
-export default class Editor extends React.Component {
+export default class Editor extends React.Component<{ value?: string }> {
   editorId: string;
   Editor: codemirror.EditorFromTextArea | null;
   Doc: codemirror.Doc | null;
   showHintTimeout: any;
-  constructor(props: any) {
+  constructor(props: { value?: string }) {
     super(props);
     this.editorId = Date.now() + "";
     this.Editor = null;
@@ -33,8 +33,13 @@ export default class Editor extends React.Component {
     });
     this.Doc = this.Editor.getDoc();
     this._bindEditorEvent();
+    this._initEditorValue();
   }
-
+  private _initEditorValue() {
+    if (this.props.value) {
+      (this.Doc as codemirror.Doc).setValue(this.props.value);
+    }
+  }
   private _bindEditorEvent() {
     (this.Editor as codemirror.EditorFromTextArea).on(
       "change",
@@ -49,7 +54,7 @@ export default class Editor extends React.Component {
           }
           this.showHintTimeout = setTimeout(function() {
             editor.execCommand("autocomplete");
-          }, 500);
+          }, 300);
         }
       }
     );
@@ -60,7 +65,7 @@ export default class Editor extends React.Component {
   }
   render() {
     return (
-      <div style={{ textAlign: "left" }}>
+      <div className="editor-content">
         <textarea id={this.editorId} name="code" style={{ border: "none" }} />
       </div>
     );

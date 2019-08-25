@@ -1,27 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { withRouter, RouteComponentProps } from "react-router-dom";
 
-const CustomTabs: React.FC<RouteComponentProps> = (props) => {
-  let currentTab = "1";
-  let currSearchMatch = props.location.search.match(/^\?type=(1|2)/);
-  if (currSearchMatch) {
-    currentTab = currSearchMatch[1];
-  }
-  const [currTab, setCurrTab] = useState<string>(currentTab);
+interface TabsProps {
+  currentTab: string;
+  changeTab: (cur: string) => void;
+}
 
-  function handleChange(e: any, value: string) {
-    setCurrTab(value);
-    props.history.push("/custom?type=" + value);
-  }
+const CustomTabs: React.FC<TabsProps> = ({ currentTab, changeTab }) => {
+  console.log(currentTab);
   return (
     <Tabs
       orientation="vertical"
       variant="scrollable"
       indicatorColor="primary"
-      value={currTab}
-      onChange={handleChange}
+      value={currentTab}
+      onChange={(e: any, value) => changeTab(value)}
       aria-label="Vertical tabs example"
       className="custom-content-tabs"
     >
@@ -31,4 +25,4 @@ const CustomTabs: React.FC<RouteComponentProps> = (props) => {
   );
 };
 
-export default withRouter(CustomTabs);
+export default CustomTabs;

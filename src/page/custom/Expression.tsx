@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Replay from "@material-ui/icons/Replay";
@@ -17,6 +17,7 @@ interface expressionProps {
   progress: boolean;
   updateProgress: (status: boolean) => void;
   updateHistoryList: (info: TimerDataInfo) => void;
+  currentInfo?: BaseApiInfo;
 }
 
 interface MessageInfo {
@@ -28,10 +29,12 @@ const Expression: React.FC<expressionProps> = ({
   progress,
   updateProgress,
   updateHistoryList,
+  currentInfo,
 }) => {
   const [loopCount, setLoopCount] = useState<string>("50000");
   const [rootName, setRootName] = useState<string>("");
   const [apiName, setApiName] = useState<string>("");
+  const [expression, setExpression] = useState<string>("");
   const [apiInfo, setApiInfo] = useState<BaseApiInfo | undefined>();
   const [messageInfo, setMessageInfo] = useState<MessageInfo>({
     type: "success",
@@ -50,6 +53,16 @@ const Expression: React.FC<expressionProps> = ({
   );
 
   let throttleTimeout: any;
+
+  useEffect(() => {
+    if (currentInfo) {
+      setExpression(currentInfo.expression || "");
+      setRootName(currentInfo.root || "");
+      setApiName(currentInfo.key || "");
+      setApiInfo(currentInfo);
+    }
+  }, [currentInfo]);
+
   function runCurrentApiTest() {
     if (progress) return;
     if (apiInfo) {
@@ -77,6 +90,7 @@ const Expression: React.FC<expressionProps> = ({
     setApiName(e.currentTarget.value);
   }
   function inputExpression(e: ChangeEvent<HTMLInputElement>) {
+    setExpression(e.currentTarget.value);
     translateApiInfo(e.currentTarget.value);
   }
   function translateApiInfo(expression: string) {
@@ -113,7 +127,7 @@ const Expression: React.FC<expressionProps> = ({
       </section>
       <section className={classes.items}>
         <Typography variant="subtitle1" gutterBottom>
-          Loop Count:
+          Loop Count($n):
         </Typography>
         <RadioGroup
           aria-label="gender"
@@ -143,18 +157,21 @@ const Expression: React.FC<expressionProps> = ({
             label="Root Name"
             className={classes.apiInput}
             onChange={inputRootName}
+            value={rootName}
             helperText="set api root path if you input this"
           />
           <TextField
             label="API Name"
             className={classes.apiInput}
             onChange={inputApiName}
+            value={apiName}
             helperText="api name in the replacement expression"
           />
           <TextField
             label="Expression"
             className={classes.expressionInput}
             onChange={inputExpression}
+            value={expression}
             helperText="see expression rules"
           />
         </div>
