@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Replay from "@material-ui/icons/Replay";
@@ -31,14 +31,11 @@ const Expression: React.FC<expressionProps> = ({
   updateHistoryList,
   currentInfo,
 }) => {
-  const initRootName = currentInfo ? currentInfo.root || "" : "";
-  const initApiName = currentInfo ? currentInfo.key || "" : "";
-  const initExpression = currentInfo ? currentInfo.expression || "" : "";
   const [loopCount, setLoopCount] = useState<string>("50000");
-  const [rootName, setRootName] = useState<string>(initRootName);
-  const [apiName, setApiName] = useState<string>(initApiName);
-  const [expression, setExpression] = useState<string>(initExpression);
-  const [apiInfo, setApiInfo] = useState<BaseApiInfo | undefined>(currentInfo);
+  const [rootName, setRootName] = useState<string>("");
+  const [apiName, setApiName] = useState<string>("");
+  const [expression, setExpression] = useState<string>("");
+  const [apiInfo, setApiInfo] = useState<BaseApiInfo | undefined>();
   const [messageInfo, setMessageInfo] = useState<MessageInfo>({
     type: "success",
     visible: false,
@@ -56,6 +53,16 @@ const Expression: React.FC<expressionProps> = ({
   );
 
   let throttleTimeout: any;
+
+  useEffect(() => {
+    if (currentInfo) {
+      setExpression(currentInfo.expression || "");
+      setRootName(currentInfo.root || "");
+      setApiName(currentInfo.key || "");
+      setApiInfo(currentInfo);
+    }
+  }, [currentInfo]);
+
   function runCurrentApiTest() {
     if (progress) return;
     if (apiInfo) {

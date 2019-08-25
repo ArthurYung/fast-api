@@ -75,17 +75,20 @@ const HistoryView: React.FC<FcProps> = ({
   }
 
   function replayCollect(item: DatabaseItem) {
-    let historyObject = {
-      pathname: "",
-      state: item.codeInfo,
-    };
     if (item.type === 1) {
-      historyObject.pathname = "/custom/?type=1";
+      history.push({
+        state: item.codeInfo,
+        pathname: "/custom",
+        search: "?type=1" + Date.now(),
+      });
+    } else if (item.type === 2) {
+      history.push({
+        state: item.codeInfo,
+        pathname: "/custom",
+        search: "?type=2" + Date.now(),
+      });
     }
-    if (item.type === 2) {
-      historyObject.pathname = "/custom/?type=2";
-    }
-    history.push(historyObject);
+    setDrawer(false);
   }
 
   async function deleteCollect(item: DatabaseItem) {
