@@ -21,6 +21,7 @@ interface viewProps {
   progress: boolean;
   updateProgress: (status: boolean) => void;
   updateHistoryList: (info: TimerDataInfo) => void;
+  history: any;
 }
 
 const View: React.FC<viewProps> = ({
@@ -28,6 +29,7 @@ const View: React.FC<viewProps> = ({
   progress,
   updateProgress,
   updateHistoryList,
+  history,
 }) => {
   const [value, setValue] = useState("50000");
   const { id } = match.params;
@@ -49,6 +51,12 @@ const View: React.FC<viewProps> = ({
       updateProgress(false);
     }, 200);
   };
+  const runEditApiTest = () => {
+    history.push({
+      pathname: "/custom/?type=2",
+      state: apiInfo,
+    });
+  };
   return (
     <div className={"api-content-box"}>
       <article className={apiStyle.main}>
@@ -60,6 +68,7 @@ const View: React.FC<viewProps> = ({
             variant="contained"
             color="inherit"
             className={apiStyle.button}
+            onClick={runEditApiTest}
           >
             Free Code
             <Code />

@@ -10,7 +10,7 @@
     width: 30%;
     max-width: 240px;
     height: 100%;
-    border-right: $border;
+    @include border(right);
   }
   &-view {
     width: 100%;

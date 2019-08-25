@@ -16,12 +16,12 @@
 }
 .nav {
   &-button {
-    border-radius: 4px !important;
+    @include border-radius;
   }
   &-box {
     box-sizing: border-box;
     width: calc(100vw - 28px);
-    border-radius: 4px;
+    @include border-radius;
     padding: 12px;
     background-color: #1d1d1d;
 
@@ -38,17 +38,17 @@
   }
 }
 
-@each $color in white, red, green, blue {
+@each $color in white, yellow, green, blue {
   .nav-box.#{$color} {
     .nav-box-text {
       @if $color == white {
         color: $color_txt_white;
-      } @else if $color == red {
+      } @else if $color == yellow {
         color: $color_txt_yellow;
       } @else if $color == green {
         color: $color_txt_green;
       } @else if $color == blue {
-        color: $color_txt_blue;
+        color: #558dff;
       } @else {
         color: $color_txt_white;
       }

@@ -65,7 +65,7 @@ body {
 }
 
 .pre-javascript {
-  border-radius: 4px;
+  @include border-radius;
 }
 
 .component-title {

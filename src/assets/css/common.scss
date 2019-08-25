@@ -18,3 +18,24 @@ $success_txt: $success;
 $error_txt: $error;
 
 $base_bg: #e0e0e0;
+
+@mixin border-radius {
+  border-radius: 4px;
+}
+
+@mixin border($position) {
+  @each $p in $position {
+    @if $p == left {
+      border-left: $border;
+    }
+    @if $p == top {
+      border-top: $border;
+    }
+    @if $p == right {
+      border-right: $border;
+    }
+    @if $p == bottom {
+      border-bottom: $border;
+    }
+  }
+}
