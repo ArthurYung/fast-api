@@ -22,11 +22,11 @@ interface ChildTimerInfo {
 
 interface FcProps {
   info: TimerDataInfo;
-  saveTimer: (info: TimerDataInfo) => void;
+  collectTimer: (info: TimerDataInfo) => void;
   deleteTimer: (timerInfo: TimerDataInfo) => void;
 }
 
-const MyCard: React.FC<FcProps> = ({ info, deleteTimer, saveTimer }) => {
+const MyCard: React.FC<FcProps> = ({ info, deleteTimer, collectTimer }) => {
   const [visible, setVisible] = useState<number>(1);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -63,7 +63,7 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer, saveTimer }) => {
 
   function saveCurrentInfo() {
     handleClose();
-    saveTimer(info);
+    collectTimer(info);
   }
 
   deepChild(info.children);
@@ -116,7 +116,7 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer, saveTimer }) => {
           },
         }}
       >
-        <MenuItem onClick={saveCurrentInfo}>SaveDB</MenuItem>
+        <MenuItem onClick={saveCurrentInfo}>Collect</MenuItem>
         <MenuItem onClick={deleteCurrInfo}>Delete</MenuItem>
       </Menu>
     </aside>

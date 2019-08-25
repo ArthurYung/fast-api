@@ -43,4 +43,5 @@ export interface DatabaseItem {
   id?: string;
   codeInfo: DatabaseCodeInfo;
   timerInfo: TimerInfo;
+  type: number;
 }
