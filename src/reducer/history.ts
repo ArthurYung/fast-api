@@ -2,7 +2,7 @@ import {
   HistoryActionType,
   HISTORY_RESULT,
   TimerDataInfo,
-  DELETE_TIMER
+  DELETE_TIMER,
 } from "../actions/history";
 
 export default function progress(
