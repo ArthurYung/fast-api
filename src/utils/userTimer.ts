@@ -3,7 +3,7 @@ import { ProcessTimerInfo, TransformData } from "./types";
 let currentTimerId: string;
 let stampTimerPool: { [x: string]: ProcessTimerInfo } = {};
 let watchTimerEnd: boolean = false;
-let watcherCallback: (x: TransformData) => void;
+let watcherCallback: (x: TransformData) => void; // 监听收集数据后异步函数的回调函数
 
 let uid = 0;
 
@@ -56,8 +56,10 @@ function getData(): TransformData {
 
   Object.keys(stampTimerPool).forEach((_uid: string) => {
     const { end, start, _tid, async } = stampTimerPool[_uid];
+
     if (end >= start) {
       const time = start - end;
+
       async
         ? transformData.addAsyncTime(time, _tid)
         : transformData.addTime(time, _tid);
