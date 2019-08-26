@@ -14,24 +14,22 @@ interface MenuProps extends RouteComponentProps {
 
 const Menu: React.FC<MenuProps> = ({ history, menuList, location }) => {
   const apiPathMatch = /^\/api\/(\d+)/;
-  let currentTabId = menuList[0].id;
+  const defaultTabId = menuList[0].id;
+  const [value, setValue] = useState(defaultTabId);
 
-  const matchId = location.pathname.match(apiPathMatch);
-  if (matchId) {
-    currentTabId = matchId[1];
-  }
-  console.log(currentTabId);
-  const [value, setValue] = useState(currentTabId);
   useEffect(() => {
+    const matchId = location.pathname.match(apiPathMatch);
     if (!matchId) {
-      history.replace("/api/" + currentTabId);
+      history.replace("/api/" + defaultTabId);
+    } else {
+      setValue(matchId[1]);
     }
-  }, [location, history, currentTabId, matchId]);
+  }, [location.pathname, history, defaultTabId, apiPathMatch]);
 
   function handleChange(e: any, value: string) {
     history.push("/api/" + value);
-    setValue(value);
   }
+
   return (
     <div className={"api-menu"}>
       <Tabs

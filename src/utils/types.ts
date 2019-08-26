@@ -1,3 +1,5 @@
+export type SyncReturn = Promise<{ data?: any; error?: ErrorEvent | string }>;
+
 export interface BaseApiInfo {
   name: string;
   fn: Function;
