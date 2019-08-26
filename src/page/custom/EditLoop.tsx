@@ -41,10 +41,10 @@ class EditLoop extends React.Component<expressionProps> {
       messageInfo: {
         type: "success",
         visible: false,
-        message: "",
+        message: ""
       },
       initCodeRefValue1: props.currentInfo ? props.currentInfo.initCode : "",
-      initCodeRefValue2: props.currentInfo ? props.currentInfo.baseCode : "",
+      initCodeRefValue2: props.currentInfo ? props.currentInfo.baseCode : ""
     };
     this.codeRef1 = React.createRef();
     this.codeRef2 = React.createRef();
@@ -52,9 +52,12 @@ class EditLoop extends React.Component<expressionProps> {
   runCurrentApiTest() {
     const initCode: string = this.codeRef1.current.getEditorValue();
     const baseCode: string = this.codeRef2.current.getEditorValue();
+
     if (this.props.progress) return;
     if (!initCode && !baseCode) return;
+
     this.props.updateProgress(true);
+
     setTimeout(() => {
       const apiInfo = interpreter.createCustomInfo(baseCode, initCode);
       const timerData: TimerDataInfo = apiInfo.fn(this.state.loopCount);
@@ -67,25 +70,28 @@ class EditLoop extends React.Component<expressionProps> {
       this.props.updateProgress(false);
     }, 200);
   }
+
   handleChangeTime(value: string) {
     this.setState({
-      loopCount: value,
+      loopCount: value
     });
   }
+
   showMessage({ type, message }: { type: string; message: string }) {
     this.setState({
       messageInfo: {
         visible: true,
         type,
-        message,
-      },
+        message
+      }
     });
   }
+
   closeMessage() {
     this.setState({
       messageInfo: {
-        visible: false,
-      },
+        visible: false
+      }
     });
   }
   render() {

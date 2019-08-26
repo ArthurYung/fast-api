@@ -25,13 +25,13 @@ interface MessageInfo {
 const HistoryView: React.FC<FcProps> = ({
   historyData,
   deleteTimer,
-  history,
+  history
 }) => {
   const [drawer, setDrawer] = useState<boolean>(false);
   const [messageInfo, setMessageInfo] = useState<MessageInfo>({
     type: "success",
     visible: false,
-    message: "",
+    message: ""
   });
   function handleCloseDrawer() {
     setDrawer(false);
@@ -43,13 +43,13 @@ const HistoryView: React.FC<FcProps> = ({
     setMessageInfo({
       type,
       message,
-      visible: true,
+      visible: true
     });
   }
   function closeMessage() {
     setMessageInfo({
       ...messageInfo,
-      visible: false,
+      visible: false
     });
   }
   function collectTimer(info: TimerDataInfo) {
@@ -57,19 +57,19 @@ const HistoryView: React.FC<FcProps> = ({
     const databaseItem = {
       timerInfo: info,
       codeInfo: codeInfo,
-      type: codeInfo.type,
+      type: codeInfo.type
     };
     addData(databaseItem)
       .then(() => {
         showMessage({
           type: "success",
-          message: "Saved timer record",
+          message: "Saved timer record"
         });
       })
       .catch((err: any) => {
         showMessage({
           type: "warn",
-          message: String(err),
+          message: String(err)
         });
       });
   }
@@ -79,13 +79,13 @@ const HistoryView: React.FC<FcProps> = ({
       history.push({
         state: item.codeInfo,
         pathname: "/custom",
-        search: "?type=1" + Date.now(),
+        search: "?type=1" + Date.now()
       });
     } else if (item.type === 2) {
       history.push({
         state: item.codeInfo,
         pathname: "/custom",
-        search: "?type=2" + Date.now(),
+        search: "?type=2" + Date.now()
       });
     }
     setDrawer(false);
@@ -97,7 +97,7 @@ const HistoryView: React.FC<FcProps> = ({
     if (error) {
       showMessage({
         type: "error",
-        message: error,
+        message: (error as ErrorEvent).message
       });
       return 0;
     }

@@ -1,5 +1,5 @@
 import { log } from "./common";
-import { DatabaseItem } from "./types";
+import { DatabaseItem, SyncReturn } from "./types";
 
 const StoreName = "history";
 const keyPath = "id";
@@ -10,7 +10,7 @@ let awaitRequestQueue: Function[] = [];
 
 const returnReject = () =>
   Promise.reject({
-    error: "IndexDB is not supported by your browser",
+    error: "IndexDB is not supported by your browser"
   });
 
 if (!window.indexedDB) {
@@ -19,7 +19,7 @@ if (!window.indexedDB) {
 }
 
 function _execRequestQueue() {
-  awaitRequestQueue.forEach((fn) => {
+  awaitRequestQueue.forEach(fn => {
     fn();
   });
   awaitRequestQueue = [];
@@ -49,7 +49,7 @@ function initDB() {
     if (!currentDB.objectStoreNames.contains(StoreName)) {
       currentDB.createObjectStore(StoreName, {
         autoIncrement: true,
-        keyPath: keyPath,
+        keyPath: keyPath
       });
       log("create success of objectStore: " + StoreName);
     }
@@ -63,7 +63,7 @@ function _getTransactionStore(): IDBObjectStore {
     .objectStore(StoreName);
 }
 
-function addData(databaseItem: DatabaseItem): Promise<any> {
+function addData(databaseItem: DatabaseItem): SyncReturn {
   log("addData", "info");
   if (connectStatus === -1) {
     return returnReject();
@@ -87,7 +87,7 @@ function addData(databaseItem: DatabaseItem): Promise<any> {
   });
 }
 
-function deleteData(id: string): Promise<any> {
+function deleteData(id: string): SyncReturn {
   log("deleteData", "info");
   if (connectStatus === -1) {
     return returnReject();
@@ -111,7 +111,7 @@ function deleteData(id: string): Promise<any> {
   });
 }
 
-function getData(id: string): Promise<any> {
+function getData(id: string): SyncReturn {
   log("getData", "info");
   if (connectStatus === -1) {
     return returnReject();
@@ -135,7 +135,7 @@ function getData(id: string): Promise<any> {
   });
 }
 
-function getAllData(): Promise<any> {
+function getAllData(): SyncReturn {
   log("getData", "info");
   if (connectStatus === -1) {
     return returnReject();

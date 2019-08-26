@@ -29,7 +29,7 @@ const View: React.FC<viewProps> = ({
   progress,
   updateProgress,
   updateHistoryList,
-  history,
+  history
 }) => {
   const [value, setValue] = useState("50000");
   const { id } = match.params;
@@ -39,9 +39,11 @@ const View: React.FC<viewProps> = ({
     Prism.languages.javascript,
     "javascript"
   );
-  function handleChange(e: any) {
+
+  const handleChange = (e: any) => {
     setValue(e.target.value);
-  }
+  };
+
   const runCurrentApiTest = () => {
     if (progress) return;
     updateProgress(true);
@@ -51,12 +53,14 @@ const View: React.FC<viewProps> = ({
       updateProgress(false);
     }, 200);
   };
+
   const runEditApiTest = () => {
     history.push({
       pathname: "/custom/?type=2",
-      state: apiInfo,
+      state: apiInfo
     });
   };
+
   return (
     <div className={"api-content-box"}>
       <article className={apiStyle.main}>

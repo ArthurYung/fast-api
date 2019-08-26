@@ -79,7 +79,7 @@ class Interpreter {
     return ++this._id + "";
   }
 
-  private _initBaseApiInfo(
+  private _createBaseApiInfo(
     expression: string,
     key: string,
     root?: string
@@ -95,7 +95,7 @@ class Interpreter {
       loop: true,
       expression,
       type: 1,
-      fn: () => {},
+      fn: () => {}
     };
   }
 
@@ -124,7 +124,7 @@ class Interpreter {
     __root__?: string
   ) {
     if (!expression) return;
-    const apiInfo = this._initBaseApiInfo(expression, key, __root__);
+    const apiInfo = this._createBaseApiInfo(expression, key, __root__);
     const expressionData = expression.match(BASE_EXPRESSION_MATCH) || [];
 
     const _beforeCode = expressionData[2];
@@ -185,7 +185,7 @@ class Interpreter {
     return this._api.map((apiInfo: BaseApiInfo) => {
       return {
         name: apiInfo.name,
-        id: apiInfo.id,
+        id: apiInfo.id
       };
     });
   }
@@ -210,7 +210,7 @@ class Interpreter {
     initCode: string = ""
   ): BaseApiInfo {
     const name = "Custom";
-    const apiInfo = this._initBaseApiInfo("", name);
+    const apiInfo = this._createBaseApiInfo("", name);
     apiInfo.initCode = initCode;
     apiInfo.baseCode = baseCode;
     apiInfo.type = 2;
