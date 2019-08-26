@@ -7,7 +7,7 @@ import apiInterpreter from "./utils/baseStatement";
 import * as serviceWorker from "./serviceWorker";
 import { Loops } from "./template/api";
 import { initDB } from "./utils/indexDB";
-
+import "./utils/worker";
 apiInterpreter.init([Loops]);
 initDB();
 
