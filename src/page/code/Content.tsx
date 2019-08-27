@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Editor from "@/components/Editor";
 
 import getTransformCode from "@/utils/codeTransform";
-import { beginTimer, start, end, getData } from "@/utils/userTimer";
+import { beginTimer, start, end, getData } from "@/utils/codeTimer";
 
 const initCodeRefValue = `
 let i = 0;
