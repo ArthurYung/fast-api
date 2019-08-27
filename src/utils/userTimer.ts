@@ -26,12 +26,12 @@ function start(_tid: string, _gid: string): string {
 
   const _uid = getUid();
 
-  const _now = window.performance.now();
-
+  const now = window.performance.now();
+  console.log(now);
   stampTimerPool[_uid] = {
     _tid: _tid,
     _gid: _gid,
-    start: _now,
+    start: now,
     end: 0,
     async: watchTimerEnd,
   };
@@ -58,7 +58,7 @@ function getData(): TransformData {
     const { end, start, _tid, async } = stampTimerPool[_uid];
 
     if (end >= start) {
-      const time = start - end;
+      const time = end - start;
 
       async
         ? transformData.addAsyncTime(time, _tid)

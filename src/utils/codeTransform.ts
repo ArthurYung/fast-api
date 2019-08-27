@@ -5,57 +5,78 @@ import * as t from "@babel/types";
 import {
   isEmptyFunction,
   findFunctionName,
-  startTime
+  replaceFunction,
+  shiftProgramBody,
 } from "./transformCommon";
 
+interface ScopeInfo<T> {
+  gid: string;
+  tid: string;
+  uid: t.Identifier;
+  path: NodePath<T>;
+}
+
+type FuncNameMap = { [x: string]: string };
+
 let _gid = 0;
+
 function getGid() {
   return ++_gid + "";
 }
 
-function _parseToAst(code: string) {
+function _parseToAst(
+  code: string
+): { id: string; ast: t.File; funcNameMap: FuncNameMap } {
   const gid = getGid();
-  const funcNameMap: { [x: string]: string } = {};
+  const funcNameMap: FuncNameMap = {};
+
   const ast = parse(code, { sourceType: "module" });
-  const queue: any[] = [];
   traverse(ast, {
-    Function(path: any) {
+    Function(path) {
       if (isEmptyFunction(path)) return;
       const uid = path.scope.generateUidIdentifier("_uid");
       const tid = path.scope.generateUid("_tid");
       const name = findFunctionName(path);
-      const query: {
-        gid: string;
-        tid: string;
-        uid: t.Identifier;
-        path: NodePath<t.Function>;
-      } = { gid, uid, tid, path };
-      console.log(path);
-      const ffn = t.blockStatement([
-        t.tryStatement(t.blockStatement(path.node.body.body))
-      ]);
-      console.log(ffn);
-      // console.log(
-      //   path
-      //     .get("body")
-      //     .get("body")
-      //     .unshift(addId(query))
-      // );
-      console.log(path.get("body"));
-
-      path.get("body").replaceWith(ffn);
+      const scopeInfo: ScopeInfo<t.Function> = { gid, uid, tid, path };
 
       funcNameMap[tid] = name;
-    }
+
+      replaceFunction(scopeInfo);
+    },
   });
 
-  return ast;
+  traverse(ast, {
+    enter(path) {
+      if (path.isProgram()) {
+        const uid = path.scope.generateUidIdentifier("_uid");
+        const rootScopeInfo: ScopeInfo<t.Program> = {
+          gid,
+          uid,
+          tid: gid,
+          path,
+        };
+        funcNameMap[gid] = "root";
+        shiftProgramBody(rootScopeInfo);
+        path.skip();
+      }
+    },
+  });
+  return {
+    id: gid,
+    ast,
+    funcNameMap,
+  };
 }
 
-function parseToAst(_code: string) {
-  const ast = _parseToAst(_code);
-  let reslt = transformFromAstSync(ast);
-  console.log(reslt);
+function getTransformCode(
+  _code: string
+): { id: string; code: string | null | undefined; nameMap: FuncNameMap } {
+  const { ast, id, funcNameMap } = _parseToAst(_code);
+  const result = transformFromAstSync(ast);
+  if (result) {
+    return { id, code: result.code, nameMap: funcNameMap };
+  }
+  return { id, code: "", nameMap: funcNameMap };
 }
 
-export { parseToAst };
+export default getTransformCode;

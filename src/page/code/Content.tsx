@@ -4,7 +4,8 @@ import Replay from "@material-ui/icons/Replay";
 import Typography from "@material-ui/core/Typography";
 import Editor from "@/components/Editor";
 
-import { parseToAst } from "@/utils/codeTransform";
+import getTransformCode from "@/utils/codeTransform";
+import { beginTimer, start, end, getData } from "@/utils/userTimer";
 
 const initCodeRefValue = `
 let i = 0;
@@ -29,13 +30,23 @@ export default class CodeTest extends React.Component {
     super(props);
     this.state = {
       toES5: false,
-      initCodeRefValue: initCodeRefValue
+      initCodeRefValue: initCodeRefValue,
     };
     this.codeRef = React.createRef();
   }
   runCurrentApiTest() {
-    const result = parseToAst(this.codeRef.current.getEditorValue());
-    console.log(result);
+    const results = getTransformCode(this.codeRef.current.getEditorValue());
+    if (results.code) {
+      const fun = new Function("__start", "__end", results.code);
+      beginTimer(results.id, (data) => console.log(data));
+      try {
+        fun(start, end);
+      } catch (e) {
+        //console.log(e);
+      }
+
+      const result = getData();
+    }
   }
   render() {
     return (
