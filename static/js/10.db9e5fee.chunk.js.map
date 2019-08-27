@@ -1,1 +1,0 @@
-{"version":3,"sources":["page/home/App.tsx"],"names":["App","to"],"mappings":"gHAAA,mCAMeA,UAJH,WACV,OAAO,kBAAC,IAAD,CAAUC,GAAI","file":"static/js/10.db9e5fee.chunk.js","sourcesContent":["import React from \"react\";\nimport { Redirect } from \"react-router-dom\";\nconst App = () => {\n  return <Redirect to={\"/api/1\"} />;\n};\n\nexport default App;\n"],"sourceRoot":""}
