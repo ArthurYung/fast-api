@@ -2,7 +2,11 @@ import { transformFromAstSync } from "@babel/core";
 import { parse } from "@babel/parser";
 import traverse, { NodePath } from "@babel/traverse";
 import * as t from "@babel/types";
-import { isEmptyFunction, findFunctionName, addId } from "./transformCommon";
+import {
+  isEmptyFunction,
+  findFunctionName,
+  startTime
+} from "./transformCommon";
 
 let _gid = 0;
 function getGid() {
@@ -13,8 +17,9 @@ function _parseToAst(code: string) {
   const gid = getGid();
   const funcNameMap: { [x: string]: string } = {};
   const ast = parse(code, { sourceType: "module" });
+  const queue: any[] = [];
   traverse(ast, {
-    Function(path) {
+    Function(path: any) {
       if (isEmptyFunction(path)) return;
       const uid = path.scope.generateUidIdentifier("_uid");
       const tid = path.scope.generateUid("_tid");
@@ -25,19 +30,25 @@ function _parseToAst(code: string) {
         uid: t.Identifier;
         path: NodePath<t.Function>;
       } = { gid, uid, tid, path };
-      console.log(addId(query));
+      console.log(path);
+      const ffn = t.blockStatement([
+        t.tryStatement(t.blockStatement(path.node.body.body))
+      ]);
+      console.log(ffn);
       // console.log(
       //   path
       //     .get("body")
       //     .get("body")
       //     .unshift(addId(query))
       // );
-      (path.get("body") as any).unshiftContainer("body", addId(query));
-      // console.log(path);
+      console.log(path.get("body"));
+
+      path.get("body").replaceWith(ffn);
+
       funcNameMap[tid] = name;
-      console.log();
     }
   });
+
   return ast;
 }
 

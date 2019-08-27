@@ -26,23 +26,22 @@ function findFunctionName(path: any): string {
   return functionName;
 }
 
-function addId(query: {
+function startTime(query: {
   gid: string;
   tid: string;
   uid: t.Identifier;
   path: NodePath<t.Function>;
 }) {
-  console.log(query);
   var result = t.variableDeclaration("var", [
     t.variableDeclarator(
       query.uid,
-      t.callExpression(
-        t.memberExpression(t.identifier("time"), t.identifier("start")),
-        [t.identifier("1")]
-      )
+      t.callExpression(t.identifier("__start"), [
+        t.stringLiteral(query.gid),
+        t.stringLiteral(query.tid)
+      ])
     )
   ]);
   return result;
 }
 
-export { isEmptyFunction, findFunctionName, addId };
+export { isEmptyFunction, findFunctionName, startTime };
