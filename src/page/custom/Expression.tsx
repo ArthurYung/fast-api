@@ -29,7 +29,7 @@ const Expression: React.FC<expressionProps> = ({
   progress,
   updateProgress,
   updateHistoryList,
-  currentInfo,
+  currentInfo
 }) => {
   const [loopCount, setLoopCount] = useState<string>("50000");
   const [rootName, setRootName] = useState<string>("");
@@ -39,7 +39,7 @@ const Expression: React.FC<expressionProps> = ({
   const [messageInfo, setMessageInfo] = useState<MessageInfo>({
     type: "success",
     visible: false,
-    message: "",
+    message: ""
   });
   const BaseCodeHtml: string = Prism.highlight(
     apiInfo ? apiInfo.baseCode : "",
@@ -56,10 +56,17 @@ const Expression: React.FC<expressionProps> = ({
 
   useEffect(() => {
     if (currentInfo) {
-      setExpression(currentInfo.expression || "");
-      setRootName(currentInfo.root || "");
-      setApiName(currentInfo.key || "");
-      setApiInfo(currentInfo);
+      const parseCurrInfo = interpreter.getBaseApiInfo(
+        currentInfo.expression,
+        currentInfo.key,
+        currentInfo.root
+      );
+      if (parseCurrInfo) {
+        setExpression(parseCurrInfo.expression || "");
+        setRootName(parseCurrInfo.root || "");
+        setApiName(parseCurrInfo.key || "");
+        setApiInfo(parseCurrInfo);
+      }
     }
   }, [currentInfo]);
 
@@ -106,13 +113,13 @@ const Expression: React.FC<expressionProps> = ({
     setMessageInfo({
       type,
       message,
-      visible: true,
+      visible: true
     });
   }
   function closeMessage() {
     setMessageInfo({
       ...messageInfo,
-      visible: false,
+      visible: false
     });
   }
 

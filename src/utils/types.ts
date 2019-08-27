@@ -47,3 +47,18 @@ export interface DatabaseItem {
   timerInfo: TimerInfo;
   type: number;
 }
+
+export interface ProcessTimerInfo {
+  _tid: string;
+  _gid: string;
+  start: number;
+  end: number;
+  async: boolean;
+}
+
+export interface TransformData {
+  id: string;
+  time: number;
+  child: { [x: string]: number };
+  async: { [x: string]: number };
+}

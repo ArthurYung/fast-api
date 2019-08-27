@@ -29,7 +29,7 @@ export default class Editor extends React.Component<{ value?: string }> {
       mode: "text/javascript",
       indentWithTabs: true,
       lineWrapping: true,
-      theme: "dracula",
+      theme: "dracula"
     });
     this.Doc = this.Editor.getDoc();
     this._bindEditorEvent();
@@ -78,5 +78,9 @@ function checkChange(text: string | undefined) {
   if (text === " ") return false;
   if (text === "=") return false;
   if (text === "= ") return false;
+  if (text === ";") return false;
+  if (text === "; ") return false;
+  if (text === ",") return false;
+  if (text === ", ") return false;
   return true;
 }

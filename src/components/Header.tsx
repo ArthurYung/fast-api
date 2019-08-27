@@ -45,13 +45,13 @@ const HEADER_PROPS_MAP: { [type: number]: NavBoxProps } = {
   },
   2: {
     text: "CUSTOM API TIMER",
-    to: "/api",
+    to: "/code",
     color: "green",
   },
   3: {
     text: "CODE TEST",
-    to: "/",
-    color: "red",
+    to: "/api",
+    color: "yellow",
   },
 };
 
@@ -67,6 +67,9 @@ class Header extends React.Component<RouteComponentProps> {
     }
     if (/^\/custom(\/?)/.test(pathname)) {
       navType = 2;
+    }
+    if (/^\/code(\/?)/.test(pathname)) {
+      navType = 3;
     }
     const navProps: NavBoxProps =
       HEADER_PROPS_MAP[navType] || HEADER_PROPS_MAP[0];

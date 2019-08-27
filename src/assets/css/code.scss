@@ -1,0 +1,12 @@
+.code {
+  &-box {
+    display: flex;
+    height: 100%;
+    padding: 6px 0;
+    box-sizing: border-box;
+  }
+  &-main {
+    width: 100%;
+    text-align: left;
+  }
+}
