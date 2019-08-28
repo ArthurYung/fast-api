@@ -69,7 +69,13 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer, collectTimer }) => {
           <CardContent>
             {info.children.map((childInfo: TimerChild, i: number) => (
               <div className="result-card-item" key={i}>
-                <span className="card-item-root">{childInfo.name}</span>
+                <span
+                  className={
+                    childInfo.async ? "card-item-root async" : "card-item-root"
+                  }
+                >
+                  {childInfo.name}
+                </span>
                 <span className="card-item-time">{childInfo.time}ms</span>
               </div>
             ))}

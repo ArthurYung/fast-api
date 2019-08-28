@@ -77,15 +77,10 @@ export default class Editor extends React.Component<{ value?: string }> {
   }
 }
 
+const noHintString = ["", "=", ";", ",", ")", "}", "]"];
+
 function checkChange(text: string | undefined) {
   if (!text) return false;
-  if (text === "") return false;
-  if (text === " ") return false;
-  if (text === "=") return false;
-  if (text === "= ") return false;
-  if (text === ";") return false;
-  if (text === "; ") return false;
-  if (text === ",") return false;
-  if (text === ", ") return false;
+  if (noHintString.includes(text.trim())) return false;
   return true;
 }

@@ -51,6 +51,7 @@ export interface DatabaseItem {
   codeInfo: DatabaseCodeInfo;
   timerInfo: TimerInfo;
   type: number;
+  liked: boolean;
 }
 
 export interface ProcessTimerInfo {

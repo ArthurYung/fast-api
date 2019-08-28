@@ -8,6 +8,7 @@ import { TimerDataInfo, ChangeTimerInfo, TimerChild } from "@/actions/history";
 import getTransformCode from "@/utils/codeTransform";
 import * as codeTimer from "@/utils/codeTimer";
 import { setCodeInfoCache, getCodeInfoName } from "@/utils/codeInfoCache";
+import Message from "@/components/Message";
 import connect from "@/container/code";
 
 const initCodeRefValue = `
@@ -58,12 +59,18 @@ class CodeTest extends React.Component<CodeTestProps> {
   state: {
     toES5: boolean;
     initCodeRefValue: string;
+    msgType: string;
+    message: string;
+    msgVisible: boolean;
   };
 
   constructor(props: CodeTestProps) {
     super(props);
     this.state = {
       toES5: false,
+      msgType: "info",
+      message: "",
+      msgVisible: false,
       initCodeRefValue:
         props.currCode && props.currCode.type === 3
           ? props.currCode.baseCode
@@ -72,7 +79,7 @@ class CodeTest extends React.Component<CodeTestProps> {
     this.codeRef = React.createRef();
   }
   shouldComponentUpdate(nextProps: CodeTestProps) {
-    if (nextProps === this.props) return true;
+    if (nextProps.currCode === this.props.currCode) return true;
     if (nextProps.currCode) {
       this.codeRef.current.resetCode(nextProps.currCode.baseCode as string);
     }
@@ -83,20 +90,29 @@ class CodeTest extends React.Component<CodeTestProps> {
     if (this.props.progress) return;
     this.props.updateProgress(true);
     const userCode = this.codeRef.current.getEditorValue();
-    const transformData = getTransformCode(userCode);
+
+    try {
+      var transformData = getTransformCode(userCode);
+    } catch (e) {
+      this.showMessage({ type: "error", message: e.message });
+      this.props.updateProgress(false);
+      return;
+    }
+
     setTimeout(() => {
       if (transformData.code) {
         let error = null;
-        // eslint-disable-next-line
-        const fun = new Function("__start", "__end", transformData.code);
-        codeTimer.beginTimer(
-          transformData.id,
-          this.TimerDataWatcher.bind(this)
-        );
-
         try {
+          // eslint-disable-next-line
+          const fun = new Function("__start", "__end", transformData.code);
+          codeTimer.beginTimer(
+            transformData.id,
+            this.TimerDataWatcher.bind(this)
+          );
+
           fun(codeTimer.start, codeTimer.end);
         } catch (e) {
+          console.log("error");
           error = e.message;
         }
 
@@ -142,6 +158,18 @@ class CodeTest extends React.Component<CodeTestProps> {
     };
     setCodeInfoCache(codeInfo, info.nameMap);
   }
+  showMessage({ type, message }: { type: string; message: string }) {
+    this.setState({
+      msgType: type,
+      message,
+      msgVisible: true
+    });
+  }
+  closeMessage() {
+    this.setState({
+      msgVisible: false
+    });
+  }
   render() {
     return (
       <article className="code-main">
@@ -164,6 +192,12 @@ class CodeTest extends React.Component<CodeTestProps> {
             <Editor ref={this.codeRef} value={this.state.initCodeRefValue} />
           </div>
         </section>
+        <Message
+          visible={this.state.msgVisible}
+          type={this.state.msgType}
+          closed={() => this.closeMessage()}
+          message={this.state.message}
+        />
       </article>
     );
   }

@@ -9,6 +9,7 @@
     }
     &-item {
       margin: 4px 0;
+      display: flex;
     }
   }
   &-success {
@@ -29,10 +30,21 @@
 
 .card-item {
   &-root {
-    background-color: $base_bg;
+    background-color: $sub_bg;
     padding: 0 6px;
+    width: 84px;
+    font-size: 12px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis; //溢出用省略号显示
+    white-space: nowrap; //溢出不换行
+    &.async {
+      background-color: $pink_bg;
+    }
   }
   &-time {
     margin-left: 12px;
+    font-size: 12px;
+    color: #666;
   }
 }

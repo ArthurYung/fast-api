@@ -63,7 +63,8 @@ const HistoryView: React.FC<FcProps> = ({
     const databaseItem = {
       timerInfo: info,
       codeInfo: codeInfo,
-      type: codeInfo.type
+      type: codeInfo.type,
+      liked: false
     };
     addData(databaseItem)
       .then(() => {
