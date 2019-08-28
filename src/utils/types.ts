@@ -1,5 +1,12 @@
 export type SyncReturn = Promise<{ data?: any; error?: ErrorEvent | string }>;
 
+export type WatcherFunction<T> = (x: string, params: T) => void;
+
+export interface TimerChildInfo {
+  name: string;
+  time: number;
+  async: boolean;
+}
 export interface BaseApiInfo {
   name: string;
   fn: Function;
@@ -18,12 +25,10 @@ export interface TimerInfo {
   uid: string;
   id: string;
   name: string;
-  root: boolean;
   startTime: number;
   endTime: number;
-  parentId: string | null;
   status: number; // 0 - info, 1: success, 2: error
-  children: TimerInfo[];
+  children: TimerChildInfo[];
   useTime: number;
   date: number;
   error?: string;
@@ -56,9 +61,17 @@ export interface ProcessTimerInfo {
   async: boolean;
 }
 
-export interface TransformData {
+export interface CodeTimerData {
   id: string;
   time: number;
   child: { [x: string]: number };
   async: { [x: string]: number };
+  error?: string;
+}
+
+type FuncNameMap = { [x: string]: string };
+export interface TransformInfo {
+  id: string;
+  code: string | null | undefined;
+  nameMap: FuncNameMap;
 }

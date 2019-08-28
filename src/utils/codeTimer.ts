@@ -1,9 +1,9 @@
-import { ProcessTimerInfo, TransformData } from "./types";
+import { ProcessTimerInfo, CodeTimerData } from "./types";
 
 let currentTimerId: string;
 let stampTimerPool: { [x: string]: ProcessTimerInfo } = {};
 let watchTimerEnd: boolean = false;
-let watcherCallback: (x: TransformData) => void; // 监听收集数据后异步函数的回调函数
+let watcherCallback: (x: CodeTimerData) => void; // 监听收集数据后异步函数的回调函数
 
 let uid = 0;
 
@@ -11,7 +11,7 @@ function getUid() {
   return ++uid + "";
 }
 
-function beginTimer(_gid: string, callback: (x: TransformData) => void) {
+function beginTimer(_gid: string, callback: (x: CodeTimerData) => void) {
   currentTimerId = _gid;
 
   stampTimerPool = {};
@@ -27,13 +27,13 @@ function start(_tid: string, _gid: string): string {
   const _uid = getUid();
 
   const now = window.performance.now();
-  console.log(now);
+
   stampTimerPool[_uid] = {
     _tid: _tid,
     _gid: _gid,
     start: now,
     end: 0,
-    async: watchTimerEnd,
+    async: watchTimerEnd
   };
 
   return _uid;
@@ -49,11 +49,11 @@ function end(_tid: string, _gid: string, _uid: string) {
   watchTimerEnd && watcherCallback(getData());
 }
 
-function getData(): TransformData {
+function getData(): CodeTimerData {
   watchTimerEnd = true; // 监听收集数据后异步函数的回调
 
-  const transformData: any = createTransformData(currentTimerId);
-
+  const codeTimerData: any = createCodeTimerData(currentTimerId);
+  
   Object.keys(stampTimerPool).forEach((_uid: string) => {
     const { end, start, _tid, async } = stampTimerPool[_uid];
 
@@ -61,46 +61,46 @@ function getData(): TransformData {
       const time = end - start;
 
       async
-        ? transformData.addAsyncTime(time, _tid)
-        : transformData.addTime(time, _tid);
+        ? codeTimerData.addAsyncTime(time, _tid)
+        : codeTimerData.addTime(time, _tid);
     }
   });
 
-  return transformData.getData();
+  return codeTimerData.getData();
 }
 
-function createTransformData(_gid: string) {
-  const transformData: TransformData = {
+function createCodeTimerData(_gid: string) {
+  const codeTimerData: CodeTimerData = {
     id: _gid,
     time: 0,
     child: {},
-    async: {},
+    async: {}
   };
 
   function addTime(time: number, _tid: string) {
     if (_tid === _gid) {
-      transformData.time = time;
+      codeTimerData.time = time;
     } else {
-      transformData.child[_tid] = time;
+      codeTimerData.child[_tid] = time;
     }
   }
 
   function addAsyncTime(time: number, _tid: string) {
     if (_tid === _gid) {
-      transformData.time = time;
+      codeTimerData.time = time;
     } else {
-      transformData.async[_tid] = time;
+      codeTimerData.async[_tid] = time;
     }
   }
 
   function getData() {
-    return transformData;
+    return codeTimerData;
   }
 
   return {
     addTime,
     addAsyncTime,
-    getData,
+    getData
   };
 }
 

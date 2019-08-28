@@ -8,7 +8,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import TextField from "@material-ui/core/TextField";
 import Prism from "prismjs";
 import interpreter from "@/utils/baseStatement";
-import { BaseApiInfo } from "@/utils/types";
+import { BaseApiInfo, DatabaseCodeInfo } from "@/utils/types";
 import { TimerDataInfo } from "@/actions/history";
 import connect from "@/container/apiMain";
 import Message from "@/components/Message";
@@ -17,7 +17,7 @@ interface expressionProps {
   progress: boolean;
   updateProgress: (status: boolean) => void;
   updateHistoryList: (info: TimerDataInfo) => void;
-  currentInfo?: BaseApiInfo;
+  currCode?: DatabaseCodeInfo;
 }
 
 interface MessageInfo {
@@ -29,7 +29,7 @@ const Expression: React.FC<expressionProps> = ({
   progress,
   updateProgress,
   updateHistoryList,
-  currentInfo
+  currCode
 }) => {
   const [loopCount, setLoopCount] = useState<string>("50000");
   const [rootName, setRootName] = useState<string>("");
@@ -55,11 +55,11 @@ const Expression: React.FC<expressionProps> = ({
   let throttleTimeout: any;
 
   useEffect(() => {
-    if (currentInfo) {
+    if (currCode && currCode.type === 1) {
       const parseCurrInfo = interpreter.getBaseApiInfo(
-        currentInfo.expression,
-        currentInfo.key,
-        currentInfo.root
+        currCode.expression,
+        currCode.key as string,
+        currCode.root
       );
       if (parseCurrInfo) {
         setExpression(parseCurrInfo.expression || "");
@@ -68,7 +68,7 @@ const Expression: React.FC<expressionProps> = ({
         setApiInfo(parseCurrInfo);
       }
     }
-  }, [currentInfo]);
+  }, [currCode]);
 
   function runCurrentApiTest() {
     if (progress) return;

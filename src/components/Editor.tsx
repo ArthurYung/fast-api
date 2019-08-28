@@ -63,6 +63,11 @@ export default class Editor extends React.Component<{ value?: string }> {
     if (!this.Doc) return "";
     return this.Doc.getValue();
   }
+  public resetCode(code: string) {
+    if (this.Doc) {
+      this.Doc.setValue(code);
+    }
+  }
   render() {
     return (
       <div className="editor-content">

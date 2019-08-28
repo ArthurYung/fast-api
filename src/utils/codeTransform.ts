@@ -1,12 +1,13 @@
 import { transformFromAstSync } from "@babel/core";
 import { parse } from "@babel/parser";
 import traverse, { NodePath } from "@babel/traverse";
+import { TransformInfo } from "./types";
 import * as t from "@babel/types";
 import {
   isEmptyFunction,
   findFunctionName,
   replaceFunction,
-  shiftProgramBody,
+  shiftProgramBody
 } from "./transformCommon";
 
 interface ScopeInfo<T> {
@@ -21,7 +22,7 @@ type FuncNameMap = { [x: string]: string };
 let _gid = 0;
 
 function getGid() {
-  return ++_gid + "";
+  return "code" + ++_gid;
 }
 
 function _parseToAst(
@@ -42,7 +43,7 @@ function _parseToAst(
       funcNameMap[tid] = name;
 
       replaceFunction(scopeInfo);
-    },
+    }
   });
 
   traverse(ast, {
@@ -53,24 +54,22 @@ function _parseToAst(
           gid,
           uid,
           tid: gid,
-          path,
+          path
         };
         funcNameMap[gid] = "root";
         shiftProgramBody(rootScopeInfo);
         path.skip();
       }
-    },
+    }
   });
   return {
     id: gid,
     ast,
-    funcNameMap,
+    funcNameMap
   };
 }
 
-function getTransformCode(
-  _code: string
-): { id: string; code: string | null | undefined; nameMap: FuncNameMap } {
+function getTransformCode(_code: string): TransformInfo {
   const { ast, id, funcNameMap } = _parseToAst(_code);
   const result = transformFromAstSync(ast);
   if (result) {

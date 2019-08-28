@@ -7,7 +7,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import interpreter from "@/utils/baseStatement";
 import { TimerDataInfo } from "@/actions/history";
-import { BaseApiInfo } from "@/utils/types";
+import { DatabaseCodeInfo } from "@/utils/types";
 import connect from "@/container/apiMain";
 import Message from "@/components/Message";
 import Editor from "@/components/Editor";
@@ -16,7 +16,7 @@ interface expressionProps {
   progress: boolean;
   updateProgress: (status: boolean) => void;
   updateHistoryList: (info: TimerDataInfo) => void;
-  currentInfo?: BaseApiInfo;
+  currCode?: DatabaseCodeInfo;
 }
 
 interface MessageInfo {
@@ -43,8 +43,11 @@ class EditLoop extends React.Component<expressionProps> {
         visible: false,
         message: ""
       },
-      initCodeRefValue1: props.currentInfo ? props.currentInfo.initCode : "",
-      initCodeRefValue2: props.currentInfo ? props.currentInfo.baseCode : ""
+      initCodeRefValue1:
+        props.currCode && props.currCode.type === 2
+          ? (props.currCode.initCode as string)
+          : "",
+      initCodeRefValue2: props.currCode ? props.currCode.baseCode : ""
     };
     this.codeRef1 = React.createRef();
     this.codeRef2 = React.createRef();
@@ -70,7 +73,14 @@ class EditLoop extends React.Component<expressionProps> {
       this.props.updateProgress(false);
     }, 200);
   }
-
+  shouldComponentUpdate(nextProps: expressionProps) {
+    if (nextProps === this.props) return true;
+    if (nextProps.currCode) {
+      this.codeRef1.current.resetCode(nextProps.currCode.initCode as string);
+      this.codeRef2.current.resetCode(nextProps.currCode.baseCode);
+    }
+    return true;
+  }
   handleChangeTime(value: string) {
     this.setState({
       loopCount: value
@@ -95,9 +105,11 @@ class EditLoop extends React.Component<expressionProps> {
     });
   }
   render() {
+    console.log(this.props.currCode);
     return (
       <article>
         <section>
+          {this.props.currCode && this.props.currCode.initCode}
           <div className="component-title">Edit Custom Code</div>
           <Button
             variant="contained"

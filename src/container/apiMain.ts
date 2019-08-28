@@ -2,7 +2,9 @@ import { connect } from "react-redux";
 import { UpdateProgress } from "../actions/home";
 import { updateHistoryResultData, TimerDataInfo } from "../actions/history";
 export default connect(
-  (state: any) => ({ progress: state.progress }),
+  (state: any) => {
+    return { progress: state.progress, currCode: state.currCode };
+  },
   (dispatch: any) => ({
     updateProgress(state: boolean) {
       dispatch(UpdateProgress(state));
