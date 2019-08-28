@@ -34,13 +34,13 @@ function getChildrenData(
   const syncChild: TimerChild[] = Object.keys(child).map((key: string) => ({
     name: getCodeInfoName(id, key),
     time: child[key],
-    async: false
+    async: false,
   }));
 
   const asyncChild: TimerChild[] = Object.keys(async).map((key: string) => ({
     name: getCodeInfoName(id, key),
     time: async[key],
-    async: true
+    async: true,
   }));
 
   return syncChild.concat(asyncChild);
@@ -74,7 +74,7 @@ class CodeTest extends React.Component<CodeTestProps> {
       initCodeRefValue:
         props.currCode && props.currCode.type === 3
           ? props.currCode.baseCode
-          : initCodeRefValue
+          : initCodeRefValue,
     };
     this.codeRef = React.createRef();
   }
@@ -137,7 +137,7 @@ class CodeTest extends React.Component<CodeTestProps> {
       endTime: 0,
       children: [],
       useTime: data.time,
-      date: Date.now()
+      date: Date.now(),
     };
     timerData.children = getChildrenData(data.id, data.child, data.async);
     this.props.updateHistoryTimer(timerData);
@@ -145,7 +145,7 @@ class CodeTest extends React.Component<CodeTestProps> {
   TimerDataWatcher(data: CodeTimerData) {
     const changeInfo = {
       id: data.id,
-      children: getChildrenData(data.id, data.child, data.async)
+      children: getChildrenData(data.id, data.child, data.async),
     };
     this.props.changeHistoryTimer(changeInfo);
   }
@@ -154,7 +154,7 @@ class CodeTest extends React.Component<CodeTestProps> {
       id: info.id,
       baseCode: userCode,
       type: 3,
-      name: "Code Test"
+      name: "Code Test",
     };
     setCodeInfoCache(codeInfo, info.nameMap);
   }
@@ -162,19 +162,19 @@ class CodeTest extends React.Component<CodeTestProps> {
     this.setState({
       msgType: type,
       message,
-      msgVisible: true
+      msgVisible: true,
     });
   }
   closeMessage() {
     this.setState({
-      msgVisible: false
+      msgVisible: false,
     });
   }
   render() {
     return (
       <article className="code-main">
         <section>
-          <div className="component-title">Edit Custom Code</div>
+          <div className="component-title">Test Cases</div>
           <Button
             variant="contained"
             color="primary"
@@ -184,11 +184,11 @@ class CodeTest extends React.Component<CodeTestProps> {
             <Replay />
           </Button>
         </section>
-        <section>
+        <section style={{ marginTop: "40px" }}>
           <Typography variant="subtitle1" gutterBottom>
-            Code under test:
+            Coding Your Test Cases:
           </Typography>
-          <div>
+          <div className="code-editor-box">
             <Editor ref={this.codeRef} value={this.state.initCodeRefValue} />
           </div>
         </section>
