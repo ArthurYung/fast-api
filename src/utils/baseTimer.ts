@@ -59,9 +59,7 @@ function __initApiInfo(uid: string): defineApiInfo {
 function __parseTimerInfo(info: defineApiInfo): TimerInfo {
   return {
     ...info,
-    children: [],
-    parentId: null,
-    root: true
+    children: []
   };
 }
 

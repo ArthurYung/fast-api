@@ -8,5 +8,33 @@
   &-main {
     width: 100%;
     text-align: left;
+    padding-right: 40px;
+  }
+}
+.code-editor-box {
+  .editor-content {
+    .CodeMirror {
+      height: 400px;
+    }
+  }
+}
+
+@media (min-height: 840px) {
+  .code-editor-box {
+    .editor-content {
+      .CodeMirror {
+        height: 500px;
+      }
+    }
+  }
+}
+
+@media (min-height: 900px) {
+  .code-editor-box {
+    .editor-content {
+      .CodeMirror {
+        height: 640px;
+      }
+    }
   }
 }

@@ -41,7 +41,7 @@ function RouteWithSubRoutes(route: RouterMap) {
 }
 
 const RouterView: React.FC = () => (
-  <Suspense fallback={<div>loading...</div>}>
+  <Suspense fallback={<div>first loading always slowly...()</div>}>
     {routes.map((route, i) => {
       return <RouteWithSubRoutes key={i} {...route} />;
     })}

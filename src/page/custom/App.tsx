@@ -4,7 +4,6 @@ import Content from "./Content";
 import Tabs from "./CustomTab";
 
 const Custom: React.FC<RouteComponentProps> = props => {
-  const currentInfo = props.location.state;
   const [currTab, setCurrTab] = useState<string>("1");
 
   useEffect(() => {
@@ -26,7 +25,7 @@ const Custom: React.FC<RouteComponentProps> = props => {
   return (
     <div className="custom-box">
       <Tabs currentTab={currTab} changeTab={changeTab} />
-      <Content currentTab={currTab} currentInfo={currentInfo} />
+      <Content currentTab={currTab} />
     </div>
   );
 };

@@ -38,6 +38,17 @@
   }
 }
 
+.footer-nav {
+  padding: 6px 0;
+  color: #fff;
+  .nav-box-subText {
+    color: #808080;
+  }
+  .nav-box {
+    padding: 8px;
+  }
+}
+
 @each $color in white, yellow, green, blue {
   .nav-box.#{$color} {
     .nav-box-text {

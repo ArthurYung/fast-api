@@ -12,13 +12,8 @@ import Check from "@material-ui/icons/Check";
 import CardContent from "@material-ui/core/CardContent";
 import Divider from "@material-ui/core/Divider";
 
-import { TimerDataInfo } from "@/actions/history";
+import { TimerDataInfo, TimerChild } from "@/actions/history";
 import { dateFormat } from "@/utils/date";
-
-interface ChildTimerInfo {
-  name: string;
-  useTime: number;
-}
 
 interface FcProps {
   info: TimerDataInfo;
@@ -32,20 +27,6 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer, collectTimer }) => {
 
   const showMenu = Boolean(anchorEl);
   const resultClassName = info.status === 2 ? "result-error" : "result-success";
-
-  const timerChildList: ChildTimerInfo[] = [];
-
-  function deepChild(child: TimerDataInfo[], root: string = "") {
-    child.forEach((info: TimerDataInfo) => {
-      timerChildList.push({
-        name: root + info.name,
-        useTime: info.useTime,
-      });
-      if (info.children.length) {
-        deepChild(info.children, info.name);
-      }
-    });
-  }
 
   function openSettingMenu(event: React.MouseEvent<HTMLElement>) {
     setAnchorEl(event.currentTarget);
@@ -66,7 +47,6 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer, collectTimer }) => {
     collectTimer(info);
   }
 
-  deepChild(info.children);
   return (
     <aside className="result-card">
       <Grow in={Boolean(visible)}>
@@ -87,10 +67,16 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer, collectTimer }) => {
             className="result-card-header"
           />
           <CardContent>
-            {timerChildList.map((childInfo: ChildTimerInfo, i: number) => (
+            {info.children.map((childInfo: TimerChild, i: number) => (
               <div className="result-card-item" key={i}>
-                <span className="card-item-root">{childInfo.name}</span>
-                <span className="card-item-time">{childInfo.useTime}ms</span>
+                <span
+                  className={
+                    childInfo.async ? "card-item-root async" : "card-item-root"
+                  }
+                >
+                  {childInfo.name}
+                </span>
+                <span className="card-item-time">{childInfo.time}ms</span>
               </div>
             ))}
           </CardContent>
@@ -112,8 +98,8 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer, collectTimer }) => {
         onClose={handleClose}
         PaperProps={{
           style: {
-            width: 120,
-          },
+            width: 120
+          }
         }}
       >
         <MenuItem onClick={saveCurrentInfo}>Collect</MenuItem>

@@ -87,6 +87,30 @@ function addData(databaseItem: DatabaseItem): SyncReturn {
   });
 }
 
+function putData(databaseItem: DatabaseItem): SyncReturn {
+  log("addData", "info");
+  if (connectStatus === -1) {
+    return returnReject();
+  }
+  return new Promise((resolve, reject) => {
+    const awaitFn = () => {
+      const objectStore = _getTransactionStore();
+      const request = objectStore.put(databaseItem);
+      request.onsuccess = function(e: Event) {
+        resolve({ data: (e.target as IDBRequest).result });
+      };
+      request.onerror = function(e: Event) {
+        reject({ error: e });
+      };
+    };
+    if (connectStatus === 0) {
+      _pushRequestQueue(awaitFn);
+    } else {
+      awaitFn();
+    }
+  });
+}
+
 function deleteData(id: string): SyncReturn {
   log("deleteData", "info");
   if (connectStatus === -1) {
@@ -159,4 +183,4 @@ function getAllData(): SyncReturn {
   });
 }
 
-export { initDB, addData, deleteData, getData, getAllData };
+export { initDB, addData, deleteData, getData, getAllData, putData };
