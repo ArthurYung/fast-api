@@ -53,7 +53,7 @@ function getData(): CodeTimerData {
   watchTimerEnd = true; // 监听收集数据后异步函数的回调
 
   const codeTimerData: any = createCodeTimerData(currentTimerId);
-  
+
   Object.keys(stampTimerPool).forEach((_uid: string) => {
     const { end, start, _tid, async } = stampTimerPool[_uid];
 
@@ -81,7 +81,9 @@ function createCodeTimerData(_gid: string) {
     if (_tid === _gid) {
       codeTimerData.time = time;
     } else {
-      codeTimerData.child[_tid] = time;
+      codeTimerData.child[_tid] = codeTimerData.child[_tid]
+        ? (codeTimerData.child[_tid] += time)
+        : time;
     }
   }
 
@@ -89,7 +91,9 @@ function createCodeTimerData(_gid: string) {
     if (_tid === _gid) {
       codeTimerData.time = time;
     } else {
-      codeTimerData.async[_tid] = time;
+      codeTimerData.async[_tid] = codeTimerData.async[_tid]
+        ? (codeTimerData.async[_tid] += time)
+        : time;
     }
   }
 

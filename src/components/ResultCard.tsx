@@ -46,7 +46,6 @@ const MyCard: React.FC<FcProps> = ({ info, deleteTimer, collectTimer }) => {
     handleClose();
     collectTimer(info);
   }
-
   return (
     <aside className="result-card">
       <Grow in={Boolean(visible)}>

@@ -25,6 +25,14 @@
     align-items: center;
   }
 }
+.radio {
+  display: block !important;
+}
+
+.radioLabel {
+  margin-left: 0px;
+  margin-right: 12px;
+}
 
 .editor-content {
   text-align: left;

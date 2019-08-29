@@ -3,15 +3,13 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Replay from "@material-ui/icons/Replay";
 import classes from "@/assets/css/custom.module.scss";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import interpreter from "@/utils/baseStatement";
 import { TimerDataInfo } from "@/actions/history";
 import { DatabaseCodeInfo } from "@/utils/types";
 import connect from "@/container/apiMain";
 import Message from "@/components/Message";
 import Editor from "@/components/Editor";
-
+import LoopCount from "@/components/LoopCount";
 interface expressionProps {
   progress: boolean;
   updateProgress: (status: boolean) => void;
@@ -105,7 +103,6 @@ class EditLoop extends React.Component<expressionProps> {
     });
   }
   render() {
-    console.log(this.props.currCode);
     return (
       <article>
         <section>
@@ -121,27 +118,10 @@ class EditLoop extends React.Component<expressionProps> {
           </Button>
         </section>
         <section className={classes.items}>
-          <Typography variant="subtitle1" gutterBottom>
-            Loop Count($n):
-          </Typography>
-          <RadioGroup
-            aria-label="gender"
-            name="gender1"
-            className={classes.radio}
+          <LoopCount
             value={this.state.loopCount}
-            onChange={(e: any, value: string) => this.handleChangeTime(value)}
-          >
-            <Radio value="50000" color="primary" />
-            <span className={classes.radioLabel}>50000</span>
-            <Radio value="100000" color="primary" />
-            <span className={classes.radioLabel}>100000</span>
-            <Radio value="500000" color="primary" />
-            <span className={classes.radioLabel}>500000</span>
-            <Radio value="1000000" color="primary" />
-            <span className={classes.radioLabel}>1000000</span>
-            <Radio value="10000000" color="primary" />
-            <span className={classes.radioLabel}>10000000</span>
-          </RadioGroup>
+            change={value => this.handleChangeTime(value)}
+          />
         </section>
         <section className={classes.items}>
           <Typography variant="subtitle1" gutterBottom>

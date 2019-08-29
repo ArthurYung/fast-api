@@ -3,8 +3,6 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Replay from "@material-ui/icons/Replay";
 import classes from "@/assets/css/custom.module.scss";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import TextField from "@material-ui/core/TextField";
 import Prism from "prismjs";
 import interpreter from "@/utils/baseStatement";
@@ -12,7 +10,7 @@ import { BaseApiInfo, DatabaseCodeInfo } from "@/utils/types";
 import { TimerDataInfo } from "@/actions/history";
 import connect from "@/container/apiMain";
 import Message from "@/components/Message";
-
+import LoopCount from "@/components/LoopCount";
 interface expressionProps {
   progress: boolean;
   updateProgress: (status: boolean) => void;
@@ -87,7 +85,7 @@ const Expression: React.FC<expressionProps> = ({
     }
   }
 
-  function handleChangeTime(e: any, value: string) {
+  function handleChangeTime(value: string) {
     setLoopCount(value);
   }
   function inputRootName(e: ChangeEvent<HTMLInputElement>) {
@@ -133,27 +131,7 @@ const Expression: React.FC<expressionProps> = ({
         </Button>
       </section>
       <section className={classes.items}>
-        <Typography variant="subtitle1" gutterBottom>
-          Loop Count($n):
-        </Typography>
-        <RadioGroup
-          aria-label="gender"
-          name="gender1"
-          className={classes.radio}
-          value={loopCount}
-          onChange={handleChangeTime}
-        >
-          <Radio value="50000" color="primary" />
-          <span className={classes.radioLabel}>50000</span>
-          <Radio value="100000" color="primary" />
-          <span className={classes.radioLabel}>100000</span>
-          <Radio value="500000" color="primary" />
-          <span className={classes.radioLabel}>500000</span>
-          <Radio value="1000000" color="primary" />
-          <span className={classes.radioLabel}>1000000</span>
-          <Radio value="10000000" color="primary" />
-          <span className={classes.radioLabel}>10000000</span>
-        </RadioGroup>
+        <LoopCount value={loopCount} change={handleChangeTime} />
       </section>
       <section className={classes.items}>
         <Typography variant="subtitle1" gutterBottom>
