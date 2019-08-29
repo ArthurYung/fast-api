@@ -1,9 +1,10 @@
 import loopCodeMap from "./loopCode";
 import { BaseApiInfo, DatabaseCodeInfo } from "./types";
 import { beginTimer, endTimer, runError } from "./baseTimer";
+import { createElementBox, clearElementBox } from "./element";
 import Mock from "./mock";
 
-const BASE_EXPRESSION_MATCH: RegExp = /^((.+?)\|)?(<(.+?)>)?(@(.+?):)?(api)?(\(\((.+?)\)\))?/;
+const BASE_EXPRESSION_MATCH: RegExp = /^((.+?)\|)?(<(.+?)>)?(@(.+?):)?(api)?(\((.+)\))?/;
 
 function __createFunction(
   initCode: string,
@@ -29,12 +30,13 @@ function __createFunction(
       return _result
     }
   `;
-    let fn: Function;
+    var fn: Function;
     try {
       // eslint-disable-next-line
       fn = new Function(
         "$n",
         "$mock",
+        "$element",
         "$name",
         "_newTime",
         "_endTime",
@@ -45,16 +47,22 @@ function __createFunction(
     } catch (e) {
       return { error: e.message };
     }
-
-    return fn(
+    console.log("111");
+    let element = createElementBox();
+    let result = fn(
       num,
       Mock,
+      element,
       name + "(" + num + ")",
       beginTimer,
       endTimer,
       runError,
       uid
     );
+    clearElementBox(element);
+    element = null as any;
+    console.log(result);
+    return result;
   };
 }
 

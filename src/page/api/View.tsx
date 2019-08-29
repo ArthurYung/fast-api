@@ -12,9 +12,8 @@ import Replay from "@material-ui/icons/Replay";
 import Chip from "@material-ui/core/Chip";
 import { BaseApiInfo } from "@/utils/types";
 import { TimerDataInfo } from "@/actions/history";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import common from "@/container/apiMain";
+import LoopCount from "@/components/LoopCount";
 
 interface viewProps {
   match: match<ApiParams>;
@@ -40,8 +39,8 @@ const View: React.FC<viewProps> = ({
     "javascript"
   );
 
-  const handleChange = (e: any) => {
-    setValue(e.target.value);
+  const handleChange = (value: string) => {
+    setValue(value);
   };
 
   const runCurrentApiTest = () => {
@@ -88,27 +87,7 @@ const View: React.FC<viewProps> = ({
           </Button>
         </section>
         <section className={apiStyle.times}>
-          <Typography variant="subtitle1" gutterBottom>
-            Loop Count:
-          </Typography>
-          <RadioGroup
-            aria-label="gender"
-            name="gender1"
-            className={apiStyle.radio}
-            value={value}
-            onChange={handleChange}
-          >
-            <Radio value="50000" color="primary" />
-            <span className={apiStyle.radioLabel}>50000</span>
-            <Radio value="100000" color="primary" />
-            <span className={apiStyle.radioLabel}>100000</span>
-            <Radio value="500000" color="primary" />
-            <span className={apiStyle.radioLabel}>500000</span>
-            <Radio value="1000000" color="primary" />
-            <span className={apiStyle.radioLabel}>1000000</span>
-            <Radio value="10000000" color="primary" />
-            <span className={apiStyle.radioLabel}>10000000</span>
-          </RadioGroup>
+          <LoopCount value={value} change={handleChange} />
         </section>
         <section className={apiStyle.subTitle}>
           <Typography variant="subtitle1" gutterBottom>

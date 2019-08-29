@@ -11,17 +11,21 @@ import { setCodeInfoCache, getCodeInfoName } from "@/utils/codeInfoCache";
 import Message from "@/components/Message";
 import connect from "@/container/code";
 
-const initCodeRefValue = `
-let i = 0;
-function jacs() {
+const initCodeRefValue = `let i = 0;
+
+function test() {
   i++
 }
+
 const testFun = (d) => {
   return d + 1
 }
 
-const j = function(){}
+const run = function(){
+  testFun(3)
+}
 
+run()
 `;
 
 type StringObject = { [x: string]: number };
@@ -34,13 +38,13 @@ function getChildrenData(
   const syncChild: TimerChild[] = Object.keys(child).map((key: string) => ({
     name: getCodeInfoName(id, key),
     time: child[key],
-    async: false,
+    async: false
   }));
 
   const asyncChild: TimerChild[] = Object.keys(async).map((key: string) => ({
     name: getCodeInfoName(id, key),
     time: async[key],
-    async: true,
+    async: true
   }));
 
   return syncChild.concat(asyncChild);
@@ -74,7 +78,7 @@ class CodeTest extends React.Component<CodeTestProps> {
       initCodeRefValue:
         props.currCode && props.currCode.type === 3
           ? props.currCode.baseCode
-          : initCodeRefValue,
+          : initCodeRefValue
     };
     this.codeRef = React.createRef();
   }
@@ -137,7 +141,7 @@ class CodeTest extends React.Component<CodeTestProps> {
       endTime: 0,
       children: [],
       useTime: data.time,
-      date: Date.now(),
+      date: Date.now()
     };
     timerData.children = getChildrenData(data.id, data.child, data.async);
     this.props.updateHistoryTimer(timerData);
@@ -145,7 +149,7 @@ class CodeTest extends React.Component<CodeTestProps> {
   TimerDataWatcher(data: CodeTimerData) {
     const changeInfo = {
       id: data.id,
-      children: getChildrenData(data.id, data.child, data.async),
+      children: getChildrenData(data.id, data.child, data.async)
     };
     this.props.changeHistoryTimer(changeInfo);
   }
@@ -154,7 +158,7 @@ class CodeTest extends React.Component<CodeTestProps> {
       id: info.id,
       baseCode: userCode,
       type: 3,
-      name: "Code Test",
+      name: "Code Test"
     };
     setCodeInfoCache(codeInfo, info.nameMap);
   }
@@ -162,12 +166,12 @@ class CodeTest extends React.Component<CodeTestProps> {
     this.setState({
       msgType: type,
       message,
-      msgVisible: true,
+      msgVisible: true
     });
   }
   closeMessage() {
     this.setState({
-      msgVisible: false,
+      msgVisible: false
     });
   }
   render() {

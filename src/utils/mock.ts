@@ -23,6 +23,17 @@ function mockArr($n: number, type: string) {
   }
 }
 
+function element(tagName: string, num?: number) {
+  if (!num) {
+    return document.createElement(tagName);
+  }
+  const elem = [];
+  for (let i = 0; i < num; i++) {
+    elem.push(document.createElement(tagName));
+  }
+  return elem;
+}
+
 type MockObjType = {
   [x: string]: "string" | "number" | "boolean" | "function" | "name" | "time";
 };
@@ -69,5 +80,6 @@ export default {
   numArr,
   mockArr,
   objArr,
-  mock
+  mock,
+  ele: element
 };
