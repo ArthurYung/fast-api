@@ -34,7 +34,7 @@ Fast API is a browser tool for testing APIs and code. [https://arthuryung.github
 ## `Expression`模式   
    
 
-在使用这种方式测试之前我们先看下`API`测试模式中国生成`isArray`测试的配置代码：
+在使用这种方式测试之前我们先看下`API`测试模式中生成`isArray`测试的配置代码：
 
 ```js
 const Array = {
