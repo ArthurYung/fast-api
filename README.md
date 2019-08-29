@@ -7,7 +7,7 @@ Fast API is a browser tool for testing APIs and code. [https://arthuryung.github
 - And coding your test Cases, you kan see how each function performs.
 - wo shi zai bian bu xia qu le ...
    
-   
+
 ## API 测试
    
 
@@ -91,14 +91,14 @@ let test = []|<for>@Array.isArray:(test)
 
 每次测试都会在右侧弹出一个新的卡片，包含了代码运行结果以及内部函数的时长。（黄色为同步函数，红色为异步执行的函数）。<br>
 点击右上角按钮可以对当前测试结果进行收藏操作，它会将测试代码和结果储存在 IndexDB。
-[](http://cdn.toofook.com/blog/images/pic1.png)   
+![alpha](http://cdn.toofook.com/blog/images/pic1.png)   
    
 
 ### 收藏夹   
 
 
 点击页面右上角的`Open Collector`按钮可以展开收藏夹面板，你可以点击左侧按钮对某条记录进行标记，标记后的记录的展示顺序会发生变化。你还可以随意的重播以及删除。
-[](http://cdn.toofook.com/blog/images/pic2.png)   
+![alpha](http://cdn.toofook.com/blog/images/pic2.png)   
    
 
 ## License
