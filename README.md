@@ -97,7 +97,7 @@ let test = []|<for>@Array.isArray:(test)
 ### 收藏夹   
 
 
-点击页面右上角的`Open Collector`按钮可以展开收藏夹面板，你可以点击左侧按钮对某条记录进行标记，标记后的记录的展示顺序会发生变化。你还可以随意的重播以及删除。
+点击页面右上角的`Open Collector`按钮可以展开收藏夹面板，你可以点击左侧按钮对某条记录进行标记，标记后的记录的展示顺序会发生变化。你还可以随意的重播以及删除。   
 ![alpha](http://cdn.toofook.com/blog/images/pic2.png)   
    
 
