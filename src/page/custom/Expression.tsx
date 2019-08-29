@@ -143,21 +143,21 @@ const Expression: React.FC<expressionProps> = ({
             className={classes.apiInput}
             onChange={inputRootName}
             value={rootName}
-            helperText="set api root path if you input this"
+            helperText="set expression api root path"
           />
           <TextField
             label="API Name"
             className={classes.apiInput}
             onChange={inputApiName}
             value={apiName}
-            helperText="api name in the replacement expression"
+            helperText="set expression api name"
           />
           <TextField
             label="Expression"
             className={classes.expressionInput}
             onChange={inputExpression}
             value={expression}
-            helperText="see expression rules"
+            helperText={<span>see expression <a rel="noopener noreferrer" target="_blank" href="https://github.com/ArthurYung/fast-api/blob/master/README.md#expression%E6%A8%A1%E5%BC%8F">rules</a></span>}
           />
         </div>
       </section>
