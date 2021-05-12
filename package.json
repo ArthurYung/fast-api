@@ -22,7 +22,7 @@
     "@types/react-dom": "16.8.5",
     "@types/react-redux": "^7.1.2",
     "@types/react-router-dom": "^4.3.4",
-    "codemirror": "^5.48.4",
+    "codemirror": "^5.58.2",
     "mockjs": "^1.0.1-beta3",
     "node-sass": "^4.12.0",
     "prismjs": "^1.17.1",
